@@ -21,8 +21,7 @@ class Snake {
                 this.direction = newDirection;
             }
        }                                               
-   
-                                                                     
+
         move() {                                    // Move the snake forward                                              
         const head = { ...this.segment[0] };        // copy of the array
         switch (this.direction) {                   // Determine the new head position based on the direction
@@ -40,7 +39,6 @@ class Snake {
                 break; 
         }
            
-        
         this.segment.unshift(head);                       // Add the new element to the front of the array
             if (!this.growing) {
             this.segment.pop();                          //pop() deletes the last element of the arrays.
@@ -60,13 +58,6 @@ class Snake {
 
     grow() {                                            // Grow the snake 
         this.growing = true;
-    }
-
-        draw(ctx) {
-        ctx.fillStyle = 'lime';
-        this.body.forEach(segment => {             //callback function
-            ctx.fillRect(segment.x * 20, segment.y * 20, 20, 20); // 20x20 pix at position 20,20
-        });
     }
 }
 

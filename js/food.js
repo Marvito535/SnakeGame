@@ -1,19 +1,29 @@
 class Food {
-    constructor() {
-        this.position = this.randomPosition();
+    constructor(boardWidth, boardHeight, blockSize) {
+        this.boardWidth = boardWidth;
+        this.boardHeight = boardHeight;
+        this.blockSize = blockSize;
+        this.position = this.generatePosition();
     }
 
-    randomPosition() {
-        return {
-            x: Math.floor(Math.random() * 20),
-            y: Math.floor(Math.random() * 20)
-        };
+    generatePosition() {                                                                                //generate random position for food
+        const x = Math.floor(Math.random() * (this.boardWidth / this.blockSize)) * this.blockSize;
+        const y = Math.floor(Math.random() * (this.boardHeight / this.blockSize)) * this.blockSize;
+        return { x: x, y: y };
     }
 
-    draw(ctx) {
+    draw(ctx) {                                                                                         //draw food on canvas
         ctx.fillStyle = 'red';
-        ctx.fillRect(this.position.x * 20, this.position.y * 20, 20, 20);
+        ctx.fillRect(this.position.x, this.position.y, this.blockSize, this.blockSize);
+    }
+
+    isEaten(snakePosition) {                                                                            //eating check 
+        return snakePosition.x === this.position.x && snakePosition.y === this.position.y;
+    }
+
+    relocate() {
+    this.position = this.generatePosition();
     }
 }
 
-const food = new Food();
+export default Food;
