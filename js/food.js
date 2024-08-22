@@ -12,7 +12,7 @@ class Food {
         return { x: x, y: y };
     }
 
-    draw(ctx) {                                                                                         //draw food on canvas
+    drawFood(ctx) {                                                                                         //draw food on canvas
         ctx.fillStyle = 'red';
         ctx.fillRect(this.position.x, this.position.y, this.blockSize, this.blockSize);
     }
