@@ -1,27 +1,123 @@
 import Food from './food.js';
 import Snake from './snake.js';
 
-const dachshundHead = new Image();
-const dachshundMiddle = new Image();
-const dachshundRear = new Image();
-
-dachshundHead.src = 'dachshund_front.png';
-dachshundMiddle.src = 'dachshund_middle.png';
-dachshundRear.src = 'dachshund_rear.png';
-
 let imagesLoaded = 0;
-const totalImages = 3;
+const totalImages = 18; 
+
+function checkAllImagesLoaded() {
+    imagesLoaded++;
+    if (imagesLoaded === totalImages) {
+        onImagesLoaded();
+    }
+}
+
+// Hintergrundbild laden
+const backgroundImage = new Image();
+backgroundImage.src = 'background.png';
+backgroundImage.onload = checkAllImagesLoaded;
+
+// Bestehende Dackelbilder
+const dachshundHeadLeft = new Image();
+dachshundHeadLeft.src = 'dachshund_front_left.png';
+dachshundHeadLeft.onload = checkAllImagesLoaded;
+
+const dachshundMiddleLeft = new Image();
+dachshundMiddleLeft.src = 'dachshund_middle_left.png';
+dachshundMiddleLeft.onload = checkAllImagesLoaded;
+
+const dachshundRearLeft = new Image();
+dachshundRearLeft.src = 'dachshund_rear_left.png';
+dachshundRearLeft.onload = checkAllImagesLoaded;
+
+const dachshundHeadRight = new Image();
+dachshundHeadRight.src = 'dachshund_front_right.png';
+dachshundHeadRight.onload = checkAllImagesLoaded;
+
+const dachshundMiddleRight = new Image();
+dachshundMiddleRight.src = 'dachshund_middle_right.png';
+dachshundMiddleRight.onload = checkAllImagesLoaded;
+
+const dachshundRearRight = new Image();
+dachshundRearRight.src = 'dachshund_rear_right.png';
+dachshundRearRight.onload = checkAllImagesLoaded;
+
+const dachshundHeadUp = new Image();
+dachshundHeadUp.src = 'dachshund_front_up.png';
+dachshundHeadUp.onload = checkAllImagesLoaded;
+
+const dachshundMiddleUp = new Image();
+dachshundMiddleUp.src = 'dachshund_middle_up.png';
+dachshundMiddleUp.onload = checkAllImagesLoaded;
+
+const dachshundRearUp = new Image();
+dachshundRearUp.src = 'dachshund_rear_up.png';
+dachshundRearUp.onload = checkAllImagesLoaded;
+
+
+const dachshundHeadDown = new Image();
+dachshundHeadDown.src = 'dachshund_front_down.png';
+dachshundHeadDown.onload = checkAllImagesLoaded;
+
+const dachshundMiddleDown = new Image();
+dachshundMiddleDown.src = 'dachshund_middle_down.png';
+dachshundMiddleDown.onload = checkAllImagesLoaded;
+
+const dachshundRearDown = new Image();
+dachshundRearDown.src = 'dachshund_rear_down.png';
+dachshundRearDown.onload = checkAllImagesLoaded;
+
+const strawberryImage = new Image();
+strawberryImage.src = 'strawberry.png';
+strawberryImage.onload = checkAllImagesLoaded;
+
+const dachshundCurveBL = new Image();
+dachshundCurveBL.src = 'dachshund_curve_bl.png';
+dachshundCurveBL.onload = checkAllImagesLoaded;
+
+const dachshundCurveTL = new Image();
+dachshundCurveTL.src = 'dachshund_curve_tl.png';
+dachshundCurveTL.onload = checkAllImagesLoaded;
+
+const dachshundCurveBR = new Image();
+dachshundCurveBR.src = 'dachshund_curve_br.png';
+dachshundCurveBR.onload = checkAllImagesLoaded;
+
+const dachshundCurveTR = new Image();
+dachshundCurveTR.src = 'dachshund_curve_tr.png';
+dachshundCurveTR.onload = checkAllImagesLoaded;
+let snake;
+
+function onImagesLoaded() {
+    snake = new Snake(boardWidth, boardHeight, blockSize, ctx, 
+                      dachshundHeadLeft, dachshundMiddleLeft, dachshundRearLeft,
+                      dachshundHeadRight, dachshundMiddleRight, dachshundRearRight,
+                      dachshundHeadUp, dachshundMiddleUp, dachshundRearUp,
+                      dachshundHeadDown, dachshundMiddleDown, dachshundRearDown,
+                      backgroundImage, dachshundCurveBL, dachshundCurveTL, dachshundCurveBR, dachshundCurveTR);
+
+    document.addEventListener('keydown', handleKeyDown);
+    requestAnimationFrame(gameLoop); // Hier wird der timestamp übergeben
+}
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-const blockSize = 120;
-const boardWidth = canvas.width;
-const boardHeight = canvas.height;
+let blockSize;
 
-let speed = 20; 
-let frameCounter = 0;
-let food = new Food(boardWidth, boardHeight, blockSize);
-let snake;
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    blockSize = Math.floor(Math.min(canvas.width, canvas.height) / 10);
+}
+
+resizeCanvas();
+
+let boardWidth = canvas.width;
+let boardHeight = canvas.height;
+let food = new Food(boardWidth, boardHeight, blockSize, strawberryImage);
+
+const frameRate = 2 // Anzahl der Bewegungen pro Sekunde
+const frameInterval = 1000 / frameRate;
+let lastFrameTime = 0;
 
 function handleKeyDown(event) {
     switch (event.key) {
@@ -40,46 +136,50 @@ function handleKeyDown(event) {
     }
 }
 
-function onImagesLoaded() {
-    snake = new Snake(boardWidth, boardHeight, blockSize, ctx, dachshundHead, dachshundMiddle, dachshundRear);
-    document.addEventListener('keydown', handleKeyDown);
-    gameLoop(); // Start the game loop when all images are loaded
+function drawBackground() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+    const pattern = ctx.createPattern(backgroundImage, 'repeat');
+    ctx.fillStyle = pattern;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
+function gameLoop(timestamp) {
+    if (timestamp - lastFrameTime > frameInterval) {
+        lastFrameTime = timestamp;
 
-dachshundHead.onload = dachshundMiddle.onload = dachshundRear.onload = function() {
-    imagesLoaded++;
-    if (imagesLoaded === totalImages) {
-        onImagesLoaded();
-    }
-};
+        drawBackground(); // Draw the background first
 
-dachshundHead.onerror = dachshundMiddle.onerror = dachshundRear.onerror = function() {
-    console.error('Ein Fehler ist beim Laden der Bildern aufgetreten.');
-};
+        if (food.isEaten(snake.segments[0])) {
+            food.relocate();
+            snake.grow();
+        }
 
-function gameLoop() {
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const snakePosition = snake.segments[0];
-
-    if (food.isEaten(snakePosition)) {
-    food.relocate();
-    snake.grow();
-    }
-
-    frameCounter++;
-    if (frameCounter >= speed) {
         snake.move();
-        frameCounter = 0; 
-        if (snake.checkCollision()) {
-            return; 
-        } 
+        snake.checkCollision();
+        snake.drawSnake();
+        food.drawFood(ctx); // Draw food only if needed
     }
 
-    snake.drawSnake(); 
-    food.drawFood(ctx);
+    requestAnimationFrame(gameLoop);
+}                                             
 
-    requestAnimationFrame(gameLoop); 
-}                                              
+window.addEventListener('resize', () => {
+    resizeCanvas();
+    boardWidth = canvas.width;
+    boardHeight = canvas.height;
+
+    snake.boardWidth = boardWidth;
+    snake.boardHeight = boardHeight;
+    snake.blockSize = blockSize;
+
+    food.boardWidth = boardWidth;
+    food.boardHeight = boardHeight;
+    food.blockSize = blockSize;
+
+    food.relocate();
+
+    drawBackground();  // Neu zeichnen nach dem Resize
+    //snake.drawSnake(); // Snake neu zeichnen
+});
+
+

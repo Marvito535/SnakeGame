@@ -1,29 +1,32 @@
 class Food {
-    constructor(boardWidth, boardHeight, blockSize) {
+    constructor(boardWidth, boardHeight, blockSize, strawberryImage) {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         this.blockSize = blockSize;
         this.position = this.generatePosition();
+        this.strawberryImage = strawberryImage; // Save the strawberry image
     }
 
-    generatePosition() {                                                                                //generate random position for food
-        const x = Math.floor(Math.random() * (this.boardWidth / this.blockSize)) * this.blockSize;
-        const y = Math.floor(Math.random() * (this.boardHeight / this.blockSize)) * this.blockSize;
+    generatePosition() {
+        const x = Math.floor(Math.random() * (Math.floor(this.boardWidth / this.blockSize))) * this.blockSize;
+        const y = Math.floor(Math.random() * (Math.floor(this.boardHeight / this.blockSize))) * this.blockSize;
         return { x: x, y: y };
     }
 
-    drawFood(ctx) {                                                                                         //draw food on canvas
-        ctx.fillStyle = 'red';
-        ctx.fillRect(this.position.x, this.position.y, this.blockSize, this.blockSize);
+    drawFood(ctx) {
+        console.log(`Drawing food at (${this.position.x}, ${this.position.y}) with size ${this.blockSize}`);
+        ctx.drawImage(this.strawberryImage, this.position.x, this.position.y, this.blockSize, this.blockSize);
     }
 
-    isEaten(snakePosition) {                                                                            //eating check 
+    isEaten(snakePosition) {
         return snakePosition.x === this.position.x && snakePosition.y === this.position.y;
     }
 
     relocate() {
-    this.position = this.generatePosition();
+        this.position = this.generatePosition();
+        console.log(`Food relocated to (${this.position.x}, ${this.position.y})`);
     }
 }
+
 
 export default Food;
