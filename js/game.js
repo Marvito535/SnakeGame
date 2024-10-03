@@ -2,7 +2,7 @@ import Food from './food.js';
 import Snake from './snake.js';
 
 let imagesLoaded = 0;
-const totalImages = 18; 
+const totalImages = 13; 
 
 function checkAllImagesLoaded() {
     imagesLoaded++;
@@ -21,10 +21,6 @@ const dachshundHeadLeft = new Image();
 dachshundHeadLeft.src = 'dachshund_front_left.png';
 dachshundHeadLeft.onload = checkAllImagesLoaded;
 
-const dachshundMiddleLeft = new Image();
-dachshundMiddleLeft.src = 'dachshund_middle_left.png';
-dachshundMiddleLeft.onload = checkAllImagesLoaded;
-
 const dachshundRearLeft = new Image();
 dachshundRearLeft.src = 'dachshund_rear_left.png';
 dachshundRearLeft.onload = checkAllImagesLoaded;
@@ -33,9 +29,6 @@ const dachshundHeadRight = new Image();
 dachshundHeadRight.src = 'dachshund_front_right.png';
 dachshundHeadRight.onload = checkAllImagesLoaded;
 
-const dachshundMiddleRight = new Image();
-dachshundMiddleRight.src = 'dachshund_middle_right.png';
-dachshundMiddleRight.onload = checkAllImagesLoaded;
 
 const dachshundRearRight = new Image();
 dachshundRearRight.src = 'dachshund_rear_right.png';
@@ -45,55 +38,43 @@ const dachshundHeadUp = new Image();
 dachshundHeadUp.src = 'dachshund_front_up.png';
 dachshundHeadUp.onload = checkAllImagesLoaded;
 
-const dachshundMiddleUp = new Image();
-dachshundMiddleUp.src = 'dachshund_middle_up.png';
-dachshundMiddleUp.onload = checkAllImagesLoaded;
-
 const dachshundRearUp = new Image();
 dachshundRearUp.src = 'dachshund_rear_up.png';
 dachshundRearUp.onload = checkAllImagesLoaded;
-
 
 const dachshundHeadDown = new Image();
 dachshundHeadDown.src = 'dachshund_front_down.png';
 dachshundHeadDown.onload = checkAllImagesLoaded;
 
-const dachshundMiddleDown = new Image();
-dachshundMiddleDown.src = 'dachshund_middle_down.png';
-dachshundMiddleDown.onload = checkAllImagesLoaded;
-
 const dachshundRearDown = new Image();
 dachshundRearDown.src = 'dachshund_rear_down.png';
 dachshundRearDown.onload = checkAllImagesLoaded;
+
+const dachshundBody = new Image();
+dachshundBody.src = 'dachshund_middle_down.png';
+dachshundBody.onload = checkAllImagesLoaded;
 
 const strawberryImage = new Image();
 strawberryImage.src = 'strawberry.png';
 strawberryImage.onload = checkAllImagesLoaded;
 
-const dachshundCurveBL = new Image();
-dachshundCurveBL.src = 'dachshund_curve_bl.png';
-dachshundCurveBL.onload = checkAllImagesLoaded;
+const winkel = new Image();
+winkel.src = 'winkel.png';
+winkel.onload = checkAllImagesLoaded;
 
-const dachshundCurveTL = new Image();
-dachshundCurveTL.src = 'dachshund_curve_tl.png';
-dachshundCurveTL.onload = checkAllImagesLoaded;
+const borderImage = new Image();
+borderImage.src = 'hedge.png'; // Bild für den Rand
+borderImage.onload = checkAllImagesLoaded;
 
-const dachshundCurveBR = new Image();
-dachshundCurveBR.src = 'dachshund_curve_br.png';
-dachshundCurveBR.onload = checkAllImagesLoaded;
-
-const dachshundCurveTR = new Image();
-dachshundCurveTR.src = 'dachshund_curve_tr.png';
-dachshundCurveTR.onload = checkAllImagesLoaded;
 let snake;
 
 function onImagesLoaded() {
     snake = new Snake(boardWidth, boardHeight, blockSize, ctx, 
-                      dachshundHeadLeft, dachshundMiddleLeft, dachshundRearLeft,
-                      dachshundHeadRight, dachshundMiddleRight, dachshundRearRight,
-                      dachshundHeadUp, dachshundMiddleUp, dachshundRearUp,
-                      dachshundHeadDown, dachshundMiddleDown, dachshundRearDown,
-                      backgroundImage, dachshundCurveBL, dachshundCurveTL, dachshundCurveBR, dachshundCurveTR);
+                      dachshundHeadLeft, dachshundRearLeft,
+                      dachshundHeadRight, dachshundRearRight,
+                      dachshundHeadUp, dachshundRearUp,
+                      dachshundHeadDown, dachshundRearDown,
+                      dachshundBody, winkel);
 
     document.addEventListener('keydown', handleKeyDown);
     requestAnimationFrame(gameLoop); // Hier wird der timestamp übergeben
@@ -115,7 +96,7 @@ let boardWidth = canvas.width;
 let boardHeight = canvas.height;
 let food = new Food(boardWidth, boardHeight, blockSize, strawberryImage);
 
-const frameRate = 2 // Anzahl der Bewegungen pro Sekunde
+const frameRate = 3 // Anzahl der Bewegungen pro Sekunde
 const frameInterval = 1000 / frameRate;
 let lastFrameTime = 0;
 
@@ -143,11 +124,33 @@ function drawBackground() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
+function drawBorder() {
+    const borderWidth = blockSize *6; // Randbild soll 5 Blöcke breit sein
+    const borderHeight = blockSize*1; // Randbild soll 2 Blöcke hoch sein
+
+    // Setze den Füllstil auf das Muster
+    const borderPattern = ctx.createPattern(borderImage, 'repeat');
+    ctx.fillStyle = borderPattern;
+
+    // Obere Kante
+    for (let x = 0; x < canvas.width; x += borderWidth) {
+        ctx.drawImage(borderImage, x, 0, borderWidth, borderHeight);
+    }
+
+    // Untere Kante
+    for (let x = 0; x < canvas.width; x += borderWidth) {
+        ctx.drawImage(borderImage, x, canvas.height - borderHeight, borderWidth, borderHeight);
+    }
+}
+
+
+
 function gameLoop(timestamp) {
     if (timestamp - lastFrameTime > frameInterval) {
         lastFrameTime = timestamp;
 
         drawBackground(); // Draw the background first
+        drawBorder(); // Rahmen zeichnen
 
         if (food.isEaten(snake.segments[0])) {
             food.relocate();
@@ -177,6 +180,7 @@ window.addEventListener('resize', () => {
     food.blockSize = blockSize;
 
     food.relocate();
+    snake.drawSnake();
 
     drawBackground();  // Neu zeichnen nach dem Resize
     //snake.drawSnake(); // Snake neu zeichnen

@@ -1,10 +1,10 @@
 class Snake {
     constructor(boardWidth, boardHeight, blockSize, ctx, 
-                dachshundHeadLeft, dachshundMiddleLeft, dachshundRearLeft,
-                dachshundHeadRight, dachshundMiddleRight, dachshundRearRight,
-                dachshundHeadUp, dachshundMiddleUp, dachshundRearUp,
-                dachshundHeadDown, dachshundMiddleDown, dachshundRearDown,
-                dachshundCurveBL, dachshundCurveTL, dachshundCurveBR, dachshundCurveTR ) {
+                dachshundHeadLeft, dachshundRearLeft,
+                dachshundHeadRight, dachshundRearRight,
+                dachshundHeadUp, dachshundRearUp,
+                dachshundHeadDown, dachshundRearDown, dachshundBody, winkel) 
+                {
 
         const startX = Math.floor(boardWidth / (2 * blockSize)) * blockSize;
         const startY = Math.floor(boardHeight / (2 * blockSize)) * blockSize;
@@ -22,21 +22,18 @@ class Snake {
         this.ctx = ctx;
 
         this.dachshundHeadLeft = dachshundHeadLeft; 
-        this.dachshundMiddleLeft = dachshundMiddleLeft; 
-        this.dachshundRearLeft = dachshundRearLeft; 
-        this.dachshundHeadRight = dachshundHeadRight;
-        this.dachshundMiddleRight = dachshundMiddleRight;
-        this.dachshundRearRight = dachshundRearRight;
-        this.dachshundHeadUp = dachshundHeadUp;
-        this.dachshundMiddleUp = dachshundMiddleUp;
-        this.dachshundRearUp = dachshundRearUp;
         this.dachshundHeadDown = dachshundHeadDown;
-        this.dachshundMiddleDown = dachshundMiddleDown;
+        this.dachshundHeadRight = dachshundHeadRight;
+        this.dachshundHeadUp = dachshundHeadUp;
+ 
+        this.dachshundRearLeft = dachshundRearLeft; 
+        this.dachshundRearUp = dachshundRearUp;
+        this.dachshundRearRight = dachshundRearRight;
         this.dachshundRearDown = dachshundRearDown;
-        this.dachshundCurveBL = dachshundCurveBL;
-        this.dachshundCurveTL = dachshundCurveTL;
-        this.dachshundCurveBR = dachshundCurveBR;
-        this.dachshundCurveTR = dachshundCurveTR;;
+
+        this.dachshundBody = dachshundBody;
+        this.winkel = winkel;
+      
     }
 
     setDirection(newDirection) {
@@ -104,31 +101,40 @@ class Snake {
     grow() {  
         this.growing = true;                                         
     }
-
-    drawSegment(image, x, y, width, height) {
+    drawSegment(image, x, y, width, height, rotationAngle = 0, flipHorizontally = false, flipVertically = false) {
         if (!(image instanceof HTMLImageElement)) {
             console.error('Invalid image:', image);
             return;
         }
     
-        this.ctx.drawImage(image, x, y, width, height);
-    }
+        this.ctx.save(); // Save the current state of the canvas context
+        this.ctx.translate(x + width / 2, y + height / 2); // Move the context to the point where the image will be drawn
 
-     clearSegment(ctx, segments, index) {
-        if (index < 0 || index >= segments.length) {
-            console.error('Index out of bounds');
-            return;
+        // Apply rotation if necessary
+        if (rotationAngle) {
+            this.ctx.rotate(rotationAngle * Math.PI / 180);
         }
-    
-        const segment = segments[index];
-        ctx.clearRect(segment.x, segment.y, segment.width, segment.height);
-    }
+        
+        // Apply flipping if necessary
+        if (flipHorizontally) {
+            this.ctx.scale(-1, 1); // Flip horizontally
+        }
+        if (flipVertically) {
+            this.ctx.scale(1, -1); // Flip vertically
+        }
 
+        // Draw the image with the appropriate transformations
+        this.ctx.drawImage(image, -width / 2, -height / 2, width, height); 
+
+        this.ctx.restore(); // Restore the previous context state
+    }
+    
+    
     
     drawSnake() {
         const segmentSize = this.blockSize;
-        
-        // Kopf zeichnen
+    
+        // Draw head
         const head = this.segments[0];
         let headImage;
         switch (head.direction) {
@@ -146,65 +152,12 @@ class Snake {
                 break;
         }
         this.drawSegment(headImage, head.x, head.y, segmentSize, segmentSize);
-
-       // draw body 
-     console.log('Zeichne Segmente');
-for (let i = 1; i < this.segments.length - 1; i++) {
-    console.log(`Zeichne Segment ${i}`);
-    const currentSegment = this.segments[i];
-    const prevSegment = this.segments[i - 1];
-    const nextSegment = this.segments[i + 1];
-
-    let middleImage;
-
-    if (i === 2) {
-        // Spezielle Bedingung für das zweite Segment
-        switch (nextSegment.direction) {
-            case 'RIGHT':
-                middleImage = this.dachshundMiddleRight;
-                break;
-            case 'LEFT':
-                middleImage = this.dachshundMiddleLeft;
-                break;
-            case 'UP':
-                middleImage = this.dachshundMiddleUp;
-                break;
-            case 'DOWN':
-                middleImage = this.dachshundMiddleDown;
-                break;
-        }
-    } else if (prevSegment.direction === nextSegment.direction) {
-        // Gerade Segmente
-        switch (prevSegment.direction) {
-            case 'RIGHT':
-                middleImage = this.dachshundMiddleRight;
-                break;
-            case 'LEFT':
-                middleImage = this.dachshundMiddleLeft;
-                break;
-            case 'UP':
-                middleImage = this.dachshundMiddleUp;
-                break;
-            case 'DOWN':
-                middleImage = this.dachshundMiddleDown;
-                break;
-        }
-    } else {
-        // Kurven Segmente
-        middleImage = this.getCurveImage(prevSegment.direction, nextSegment.direction);
-    }
-
-    this.drawSegment(middleImage, currentSegment.x, currentSegment.y, segmentSize, segmentSize);
-}
-
-
-        // Schwanzsegment zeichnen
+    
+        // Draw rear
         if (this.segments.length > 1) {
             const rearSegment = this.segments[this.segments.length - 1];
-            const prevSegmentRear = this.segments[this.segments.length - 2];
             let rearImage;
-
-            switch (prevSegmentRear.direction) {
+            switch (rearSegment.direction) {
                 case 'RIGHT':
                     rearImage = this.dachshundRearRight;
                     break;
@@ -218,32 +171,56 @@ for (let i = 1; i < this.segments.length - 1; i++) {
                     rearImage = this.dachshundRearDown;
                     break;
             }
-
             this.drawSegment(rearImage, rearSegment.x, rearSegment.y, segmentSize, segmentSize);
         }
-    }
 
-    getCurveImage(prevDirection, nextDirection) {
-        if ((prevDirection === 'RIGHT' && nextDirection === 'UP') || 
-            (prevDirection === 'UP' && nextDirection === 'RIGHT')) {
-            return this.dachshundCurveTL;
+        for (let i = 1; i < this.segments.length - 1; i++) {
+            let currentSegment = this.segments[i];
+            let nextSegment = this.segments[i + 1];
+        
+            // Check for a turn/corner
+            let segmentImage = this.dachshundBody; // Default to straight body segment
+            let bodyRotation = 0;
+            let flipVertically = false;
+            let flipHorizontally = false;
+
+        
+            if (
+                (currentSegment.direction === 'LEFT' && nextSegment.direction === 'DOWN') ||
+                (currentSegment.direction === 'UP' && nextSegment.direction === 'RIGHT')
+            ) {
+                segmentImage = this.winkel;
+                flipHorizontally = true;
+            } else if (
+                (currentSegment.direction === 'RIGHT' && nextSegment.direction === 'DOWN') ||
+                (currentSegment.direction === 'UP' && nextSegment.direction === 'LEFT')
+            ) {
+                segmentImage = this.winkel;
+
+            } else if (
+                (currentSegment.direction === 'LEFT' && nextSegment.direction === 'UP') ||
+                (currentSegment.direction === 'DOWN' && nextSegment.direction === 'RIGHT')
+            ) {
+                segmentImage = this.winkel;
+                bodyRotation = 180; 
+            } else if (
+                (currentSegment.direction === 'DOWN' && nextSegment.direction === 'LEFT') ||
+                (currentSegment.direction === 'RIGHT' && nextSegment.direction === 'UP')
+            ) { 
+                segmentImage = this.winkel;
+                flipVertically = true;
+        
+            }  else if (currentSegment.direction === 'RIGHT' || currentSegment.direction === 'LEFT')
+                { segmentImage = this.dachshundBody;
+                bodyRotation = 90; 
+            }
+
+                
+            this.drawSegment(segmentImage, currentSegment.x, currentSegment.y, segmentSize, segmentSize, bodyRotation, flipHorizontally, flipVertically);
         }
-        if ((prevDirection === 'RIGHT' && nextDirection === 'DOWN') || 
-            (prevDirection === 'DOWN' && nextDirection === 'RIGHT')) {
-            return this.dachshundCurveTL;
-        }
-        if ((prevDirection === 'LEFT' && nextDirection === 'UP') || 
-            (prevDirection === 'UP' && nextDirection === 'LEFT')) {
-            return this.dachshundCurveTL;
-        }
-        if ((prevDirection === 'LEFT' && nextDirection === 'DOWN') || 
-            (prevDirection === 'DOWN' && nextDirection === 'LEFT')) {
-            return this.dachshundCurveTL;
-        }
-        return this.dachshundMiddleRight; // Default to straight if no curve
+            
     }
     
-
     gameOver() {
         alert("Game Over!"); 
         this.isGameOver = true; 
