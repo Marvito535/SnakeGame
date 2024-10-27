@@ -2,7 +2,7 @@ import Food from './food.js';
 import Snake from './snake.js';
 
 let imagesLoaded = 0;
-const totalImages = 13; 
+const totalImages = 14; 
 
 function checkAllImagesLoaded() {
     imagesLoaded++;
@@ -66,34 +66,55 @@ const borderImage = new Image();
 borderImage.src = 'hedge.png'; // Bild für den Rand
 borderImage.onload = checkAllImagesLoaded;
 
-let snake;
+const gardenerImage = new Image();
+gardenerImage.src = 'gardener.png'; 
+gardenerImage.onload = checkAllImagesLoaded;
+
+const dachshundMouthOpen = new Image();
+dachshundMouthOpen.src = 'dachshund_mouth_open.png';
+dachshundMouthOpen.onload = checkAllImagesLoaded;
+
+let boardWidth, boardHeight, blockSize, snake;
 
 function onImagesLoaded() {
+    resizeCanvas(); // Canvas direkt anpassen
+
     snake = new Snake(boardWidth, boardHeight, blockSize, ctx, 
                       dachshundHeadLeft, dachshundRearLeft,
                       dachshundHeadRight, dachshundRearRight,
                       dachshundHeadUp, dachshundRearUp,
                       dachshundHeadDown, dachshundRearDown,
-                      dachshundBody, winkel);
+                      dachshundBody, winkel, dachshundMouthOpen);
 
     document.addEventListener('keydown', handleKeyDown);
-    requestAnimationFrame(gameLoop); // Hier wird der timestamp übergeben
+    requestAnimationFrame(gameLoop); // Start des Spiels
 }
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-let blockSize;
 
 function resizeCanvas() {
+    const sizeFactor = 10; // Anzahl der Blöcke für die kleinere Dimension
+    const margin = 2; // Sicherheitsabstand 
+
+    // Passe das Canvas an die Bildschirmgröße an
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    blockSize = Math.floor(Math.min(canvas.width, canvas.height) / 10);
+
+    // Blockgröße so berechnen, dass es ins Verhältnis passt
+    blockSize = Math.floor(Math.min(canvas.width, canvas.height) / sizeFactor) - margin;
+
+    // Neu berechnete Breite und Höhe des Spielfelds in Blöcken
+    boardWidth = Math.floor(canvas.width / blockSize) * blockSize;
+    boardHeight = Math.floor(canvas.height / blockSize) * blockSize;
+
+    // Aktuelles Canvas mit Rand bereinigen
+    canvas.width = boardWidth;
+    canvas.height = boardHeight;
 }
 
 resizeCanvas();
 
-let boardWidth = canvas.width;
-let boardHeight = canvas.height;
 let food = new Food(boardWidth, boardHeight, blockSize, strawberryImage);
 
 const frameRate = 3 // Anzahl der Bewegungen pro Sekunde
@@ -125,12 +146,8 @@ function drawBackground() {
 }
 
 function drawBorder() {
-    const borderWidth = blockSize *6; // Randbild soll 5 Blöcke breit sein
-    const borderHeight = blockSize*1; // Randbild soll 2 Blöcke hoch sein
-
-    // Setze den Füllstil auf das Muster
-    const borderPattern = ctx.createPattern(borderImage, 'repeat');
-    ctx.fillStyle = borderPattern;
+    const borderWidth = blockSize * 6; // Randbreite
+    const borderHeight = blockSize; // Randhöhe
 
     // Obere Kante
     for (let x = 0; x < canvas.width; x += borderWidth) {
@@ -143,7 +160,7 @@ function drawBorder() {
     }
 }
 
-
+let isEating = false;
 
 function gameLoop(timestamp) {
     if (timestamp - lastFrameTime > frameInterval) {
@@ -155,12 +172,18 @@ function gameLoop(timestamp) {
         if (food.isEaten(snake.segments[0])) {
             food.relocate();
             snake.grow();
+            isEating = true;  // Setze den Essstatus auf true
+            setTimeout(() => {
+                isEating = false; // Nach 250 ms den Essstatus wieder zurücksetzen
+            }, 250);
         }
+        
 
         snake.move();
         snake.checkCollision();
-        snake.drawSnake();
+        snake.drawSnake(isEating);
         food.drawFood(ctx); // Draw food only if needed
+        food.drawFoodNegative(ctx); // draws second unhealthy food
     }
 
     requestAnimationFrame(gameLoop);

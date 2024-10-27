@@ -3,7 +3,7 @@ class Snake {
                 dachshundHeadLeft, dachshundRearLeft,
                 dachshundHeadRight, dachshundRearRight,
                 dachshundHeadUp, dachshundRearUp,
-                dachshundHeadDown, dachshundRearDown, dachshundBody, winkel) 
+                dachshundHeadDown, dachshundRearDown, dachshundBody, winkel, dachshundMouthOpen) 
                 {
 
         const startX = Math.floor(boardWidth / (2 * blockSize)) * blockSize;
@@ -14,6 +14,7 @@ class Snake {
             { x: startX - blockSize, y: startY, direction: 'RIGHT' },
             { x: startX - 2 * blockSize, y: startY, direction: 'RIGHT' }
         ];
+
         this.growing = false;
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
@@ -33,6 +34,8 @@ class Snake {
 
         this.dachshundBody = dachshundBody;
         this.winkel = winkel;
+
+        this.dachshundMouthOpen = dachshundMouthOpen;
       
     }
 
@@ -82,20 +85,37 @@ class Snake {
     }
     
     checkCollision() {
-        const head = this.segments[0];
-        for (let i = 1; i < this.segments.length; i++) { 
-            if (this.segments[i].x === head.x && this.segments[i].y === head.y) {
-                this.gameOver();
-                return true;
-            }
-        }
-
-        if (head.x < 0 || head.y < 0 || head.x >= this.boardWidth || head.y >= this.boardHeight) {
-            this.gameOver();
+        const head = this.segments[0]; // Kopf der Schlange
+    
+        // Definiere die Heckenhöhe
+        const hedgeHeight = this.blockSize * 1;
+    
+        // Überprüfe Wandkollision (inklusive Hecke)
+        if (
+            head.y < hedgeHeight || // Obere Hecke
+            head.y >= this.boardHeight - hedgeHeight // Untere Hecke
+        ) {
+            this.gameOver(); // Spiel beenden
             return true;
         }
 
-        return false;
+         // Wrap-Around für die linke und rechte Seite
+         if (head.x < 0) {
+            head.x = this.boardWidth - this.blockSize; // Links raus -> Rechts wieder rein
+         } 
+         else if (head.x >= this.boardWidth) {
+         head.x = 0; // Rechts raus -> Links wieder rein
+    }
+    
+        // Überprüfe Selbstkollision
+        for (let i = 1; i < this.segments.length; i++) {
+            if (this.segments[i].x === head.x && this.segments[i].y === head.y) {
+                this.gameOver(); // Spiel beenden
+                return true;
+            }
+        }
+    
+        return false; // Keine Kollision
     }
 
     grow() {  
@@ -129,14 +149,23 @@ class Snake {
         this.ctx.restore(); // Restore the previous context state
     }
     
-    
-    
-    drawSnake() {
+    drawSnake(isEating) {
         const segmentSize = this.blockSize;
     
         // Draw head
         const head = this.segments[0];
         let headImage;
+        let flipVertically = false;
+        let flipHorizontally = false;
+        let headRotation = 0;
+
+        if (isEating && head.direction === 'LEFT') {
+            headImage = this.dachshundMouthOpen;
+        } else if (isEating && head.direction === 'RIGHT') {
+            headImage = this.dachshundMouthOpen;
+            flipHorizontally = true;
+        } else {
+             
         switch (head.direction) {
             case 'RIGHT':
                 headImage = this.dachshundHeadRight;
@@ -151,7 +180,8 @@ class Snake {
                 headImage = this.dachshundHeadDown;
                 break;
         }
-        this.drawSegment(headImage, head.x, head.y, segmentSize, segmentSize);
+    }
+        this.drawSegment(headImage, head.x, head.y, segmentSize, segmentSize, headRotation, flipHorizontally, flipVertically);
     
         // Draw rear
         if (this.segments.length > 1) {
@@ -220,6 +250,7 @@ class Snake {
         }
             
     }
+    
     
     gameOver() {
         alert("Game Over!"); 

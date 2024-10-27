@@ -18,6 +18,11 @@ class Food {
         ctx.drawImage(this.strawberryImage, this.position.x, this.position.y, this.blockSize, this.blockSize);
     }
 
+    drawFoodNegative(ctx) {
+        console.log(`Drawing food at (${this.position.x}, ${this.position.y}) with size ${this.blockSize}`);
+        ctx.drawImage(this.strawberryImage, this.position.x, this.position.y, this.blockSize, this.blockSize);
+    }
+
     isEaten(snakePosition) {
         return snakePosition.x === this.position.x && snakePosition.y === this.position.y;
     }
