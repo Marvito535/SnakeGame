@@ -2,7 +2,7 @@ import Food from './food.js';
 import Snake from './snake.js';
 
 let imagesLoaded = 0;
-const totalImages = 13; 
+const totalImages = 14; 
 
 function checkAllImagesLoaded() {
     imagesLoaded++;
@@ -66,15 +66,23 @@ const borderImage = new Image();
 borderImage.src = 'hedge.png'; // Bild für den Rand
 borderImage.onload = checkAllImagesLoaded;
 
-let snake;
+const gardenerImage = new Image();
+gardenerImage.src = 'gardener.png'; 
+gardenerImage.onload = checkAllImagesLoaded;
 
+const dachshundMouthOpen = new Image();
+dachshundMouthOpen.src = 'dachshund_mouth_open.png';
+dachshundMouthOpen.onload = checkAllImagesLoaded;
+
+
+let snake;
 function onImagesLoaded() {
     snake = new Snake(boardWidth, boardHeight, blockSize, ctx, 
                       dachshundHeadLeft, dachshundRearLeft,
                       dachshundHeadRight, dachshundRearRight,
                       dachshundHeadUp, dachshundRearUp,
                       dachshundHeadDown, dachshundRearDown,
-                      dachshundBody, winkel);
+                      dachshundBody, winkel, dachshundMouthOpen);
 
     document.addEventListener('keydown', handleKeyDown);
     requestAnimationFrame(gameLoop); // Hier wird der timestamp übergeben
@@ -128,10 +136,6 @@ function drawBorder() {
     const borderWidth = blockSize *6; // Randbild soll 5 Blöcke breit sein
     const borderHeight = blockSize*1; // Randbild soll 2 Blöcke hoch sein
 
-    // Setze den Füllstil auf das Muster
-    const borderPattern = ctx.createPattern(borderImage, 'repeat');
-    ctx.fillStyle = borderPattern;
-
     // Obere Kante
     for (let x = 0; x < canvas.width; x += borderWidth) {
         ctx.drawImage(borderImage, x, 0, borderWidth, borderHeight);
@@ -143,7 +147,15 @@ function drawBorder() {
     }
 }
 
+function drawGardener() {
+    const gardenerWidth = blockSize * 3;  // Gärtner soll 2 Blöcke breit sein
+    const gardenerHeight = blockSize * 3; // Gärtner soll 2 Blöcke hoch sein
+    const x = (canvas.width / 2) - (gardenerWidth / 2); // Zentriere den Gärtner horizontal
+    const y = (canvas.height / 2) - (gardenerHeight / 2); // Zentriere den Gärtner vertikal
+    ctx.drawImage(gardenerImage, x, y, gardenerWidth, gardenerHeight); // Zeichne das Gärtner-Bild
+}
 
+let isEating = false;
 
 function gameLoop(timestamp) {
     if (timestamp - lastFrameTime > frameInterval) {
@@ -151,15 +163,21 @@ function gameLoop(timestamp) {
 
         drawBackground(); // Draw the background first
         drawBorder(); // Rahmen zeichnen
+        drawGardener(); //drawGardener
 
         if (food.isEaten(snake.segments[0])) {
             food.relocate();
             snake.grow();
+            isEating = true;  // Setze den Essstatus auf true
+            setTimeout(() => {
+                isEating = false; // Nach 500 ms den Essstatus wieder zurücksetzen
+            }, 250);
         }
+        
 
         snake.move();
         snake.checkCollision();
-        snake.drawSnake();
+        snake.drawSnake(isEating);
         food.drawFood(ctx); // Draw food only if needed
     }
 
