@@ -69,13 +69,22 @@ borderImage.onload = checkAllImagesLoaded;
 const gardenerImage = new Image();
 gardenerImage.src = 'gardener.png'; 
 gardenerImage.onload = checkAllImagesLoaded;
+<<<<<<< HEAD
 
 const dachshundMouthOpen = new Image();
 dachshundMouthOpen.src = 'dachshund_mouth_open.png';
 dachshundMouthOpen.onload = checkAllImagesLoaded;
 
 let boardWidth, boardHeight, blockSize, snake;
+=======
+>>>>>>> 0cfc1d7ee21a981327ac543ce95b165e4d77dba6
 
+const dachshundMouthOpen = new Image();
+dachshundMouthOpen.src = 'dachshund_mouth_open.png';
+dachshundMouthOpen.onload = checkAllImagesLoaded;
+
+
+let snake;
 function onImagesLoaded() {
     resizeCanvas(); // Canvas direkt anpassen
 
@@ -146,8 +155,13 @@ function drawBackground() {
 }
 
 function drawBorder() {
+<<<<<<< HEAD
     const borderWidth = blockSize * 6; // Randbreite
     const borderHeight = blockSize; // Randhöhe
+=======
+    const borderWidth = blockSize *6; // Randbild soll 5 Blöcke breit sein
+    const borderHeight = blockSize*1; // Randbild soll 2 Blöcke hoch sein
+>>>>>>> 0cfc1d7ee21a981327ac543ce95b165e4d77dba6
 
     // Obere Kante
     for (let x = 0; x < canvas.width; x += borderWidth) {
@@ -160,6 +174,17 @@ function drawBorder() {
     }
 }
 
+<<<<<<< HEAD
+=======
+function drawGardener() {
+    const gardenerWidth = blockSize * 3;  // Gärtner soll 2 Blöcke breit sein
+    const gardenerHeight = blockSize * 3; // Gärtner soll 2 Blöcke hoch sein
+    const x = (canvas.width / 2) - (gardenerWidth / 2); // Zentriere den Gärtner horizontal
+    const y = (canvas.height / 2) - (gardenerHeight / 2); // Zentriere den Gärtner vertikal
+    ctx.drawImage(gardenerImage, x, y, gardenerWidth, gardenerHeight); // Zeichne das Gärtner-Bild
+}
+
+>>>>>>> 0cfc1d7ee21a981327ac543ce95b165e4d77dba6
 let isEating = false;
 
 function gameLoop(timestamp) {
@@ -168,13 +193,18 @@ function gameLoop(timestamp) {
 
         drawBackground(); // Draw the background first
         drawBorder(); // Rahmen zeichnen
+        drawGardener(); //drawGardener
 
         if (food.isEaten(snake.segments[0])) {
             food.relocate();
             snake.grow();
             isEating = true;  // Setze den Essstatus auf true
             setTimeout(() => {
+<<<<<<< HEAD
                 isEating = false; // Nach 250 ms den Essstatus wieder zurücksetzen
+=======
+                isEating = false; // Nach 500 ms den Essstatus wieder zurücksetzen
+>>>>>>> 0cfc1d7ee21a981327ac543ce95b165e4d77dba6
             }, 250);
         }
         
