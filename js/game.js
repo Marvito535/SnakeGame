@@ -1,8 +1,10 @@
 import Food from './food.js';
 import Snake from './snake.js';
+import Obstacles from './obstacles.js';
+import Tree from './tree.js';
 
 let imagesLoaded = 0;
-const totalImages = 14; 
+const totalImages = 16; 
 
 function checkAllImagesLoaded() {
     imagesLoaded++;
@@ -70,6 +72,14 @@ const dachshundMouthOpen = new Image();
 dachshundMouthOpen.src = 'dachshund_mouth_open.png';
 dachshundMouthOpen.onload = checkAllImagesLoaded;
 
+const obstacleImage = new Image();
+obstacleImage.src = 'TEST.png';
+obstacleImage.onload = checkAllImagesLoaded;
+
+const treeImage = new Image();
+treeImage.src = 'TEST.png';
+treeImage.onload = checkAllImagesLoaded;
+
 let boardWidth, boardHeight, blockSize, snake;
 
 function onImagesLoaded() {
@@ -112,6 +122,8 @@ function resizeCanvas() {
 resizeCanvas();
 
 let food = new Food(boardWidth, boardHeight, blockSize, strawberryImage);
+let obstacles = new Obstacles(boardWidth, boardHeight, blockSize, obstacleImage);
+let tree = new Tree(boardWidth, boardHeight, blockSize, treeImage);
 
 const frameRate = 3 // Anzahl der Bewegungen pro Sekunde
 const frameInterval = 1000 / frameRate;
@@ -156,13 +168,6 @@ function drawBorder() {
         ctx.drawImage(borderImage, x, canvas.height - borderHeight, borderWidth, borderHeight);
     }
 }
-function drawGardener() {
-    const gardenerWidth = blockSize * 3;  // Gärtner soll 2 Blöcke breit sein
-    const gardenerHeight = blockSize * 3; // Gärtner soll 2 Blöcke hoch sein
-    const x = (canvas.width / 2) - (gardenerWidth / 2); // Zentriere den Gärtner horizontal
-    const y = (canvas.height / 2) - (gardenerHeight / 2); // Zentriere den Gärtner vertikal
-    ctx.drawImage(gardenerImage, x, y, gardenerWidth, gardenerHeight); // Zeichne das Gärtner-Bild
-}
 
 let isEating = false;
 
@@ -180,7 +185,6 @@ function gameLoop(timestamp) {
             setTimeout(() => {
 
                 isEating = false; // Nach 250 ms den Essstatus wieder zurücksetzen
-                isEating = false; // Nach 500 ms den Essstatus wieder zurücksetzen
 
             }, 250);
         }
@@ -190,7 +194,17 @@ function gameLoop(timestamp) {
         snake.checkCollision();
         snake.drawSnake(isEating);
         food.drawFood(ctx); // Draw food only if needed
-        food.drawFoodNegative(ctx); // draws second unhealthy food
+        obstacles.drawObstacle(ctx); //Draw obstacles
+        tree.drawTree(ctx); //Draw tree
+
+        if (obstacles.isColliding(snake.segments[0])) {
+            snake.gameOver();
+        }
+
+        if (tree.isColliding(snake.segments[0])) {
+            snake.gameOver();
+        }
+
     }
 
     requestAnimationFrame(gameLoop);
