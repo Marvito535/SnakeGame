@@ -169,6 +169,14 @@ function drawBorder() {
     }
 }
 
+function drawScore() {
+    ctx.font = `${blockSize/2}px Arial`; // Schriftgröße basierend auf Blockgröße
+    ctx.fillStyle = 'red'; 
+    ctx.textAlign = 'left'; 
+    const scoreText = `Points: ${food.totalPoints}`;
+    ctx.fillText(scoreText, blockSize, blockSize / 1.5); // Punkte oben links zeichnen
+}
+
 let isEating = false;
 
 function gameLoop(timestamp) {
@@ -177,8 +185,10 @@ function gameLoop(timestamp) {
 
         drawBackground(); // Draw the background first
         drawBorder(); // Rahmen zeichnen
+        drawScore(); // Punkteanzeige zeichnen
 
         if (food.isEaten(snake.segments[0])) {
+            food.eatFood();
             food.relocate();
             snake.grow();
             isEating = true;  // Setze den Essstatus auf true
@@ -225,9 +235,7 @@ window.addEventListener('resize', () => {
 
     food.relocate();
     snake.drawSnake();
-
-    drawBackground();  // Neu zeichnen nach dem Resize
-    //snake.drawSnake(); // Snake neu zeichnen
+    drawBackground();  
 });
 
 

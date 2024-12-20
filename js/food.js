@@ -1,10 +1,12 @@
 class Food {
-    constructor(boardWidth, boardHeight, blockSize, strawberryImage) {
+    constructor(boardWidth, boardHeight, blockSize, strawberryImage, pointsPerFood = 10) {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         this.blockSize = blockSize;
         this.position = this.generatePosition();
-        this.strawberryImage = strawberryImage; // Save the strawberry image
+        this.strawberryImage = strawberryImage; 
+        this.pointsPerFood = pointsPerFood; 
+        this.totalPoints = 0; 
     }
 
     generatePosition() {
@@ -27,11 +29,15 @@ class Food {
         return snakePosition.x === this.position.x && snakePosition.y === this.position.y;
     }
 
+    eatFood() {
+        this.totalPoints += this.pointsPerFood; 
+        console.log(`Food eaten! Total points: ${this.totalPoints}`);
+    }
+
     relocate() {
         this.position = this.generatePosition();
         console.log(`Food relocated to (${this.position.x}, ${this.position.y})`);
     }
 }
-
 
 export default Food;
