@@ -1,5 +1,5 @@
 class Food {
-    constructor(boardWidth, boardHeight, blockSize, strawberryImage, pointsPerFood = 10) {
+    constructor(boardWidth, boardHeight, blockSize, strawberryImage, pointsPerFood) {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         this.blockSize = blockSize;
@@ -30,7 +30,7 @@ class Food {
     }
 
     eatFood() {
-        this.totalPoints += this.pointsPerFood; 
+        this.totalPoints += this.pointsPerFood = 10; 
         console.log(`Food eaten! Total points: ${this.totalPoints}`);
     }
 

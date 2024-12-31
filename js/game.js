@@ -2,6 +2,8 @@ import Food from './food.js';
 import Snake from './snake.js';
 import Obstacles from './obstacles.js';
 import Tree from './tree.js';
+import GameOverScreen from './gameOverScreen.js';
+import StartScreen from './startScreen.js';
 
 let imagesLoaded = 0;
 const totalImages = 16; 
@@ -121,9 +123,11 @@ function resizeCanvas() {
 
 resizeCanvas();
 
-let food = new Food(boardWidth, boardHeight, blockSize, strawberryImage);
+let food = new Food(boardWidth, boardHeight, blockSize, strawberryImage );
 let obstacles = new Obstacles(boardWidth, boardHeight, blockSize, obstacleImage);
 let tree = new Tree(boardWidth, boardHeight, blockSize, treeImage);
+const gameOverScreen = new GameOverScreen();
+const startScreen = new StartScreen();
 
 const frameRate = 3 // Anzahl der Bewegungen pro Sekunde
 const frameInterval = 1000 / frameRate;
@@ -178,64 +182,71 @@ function drawScore() {
 }
 
 let isEating = false;
+let isGameOver = false; // Status for Game Over
+let isGameStarted = false; // Boolean to check if the game has started
 
 function gameLoop(timestamp) {
+    if (!isGameStarted) {
+        // Show the start screen before the game starts
+        startScreen.display(ctx, canvas.width, canvas.height);
+        return; // Wait for the player to start the game
+    }
+
+    if (isGameOver) {
+        gameOverScreen.display(ctx, canvas.width, canvas.height, food.totalPoints); // Show game over screen
+        return; // Stop game loop
+    }
+
     if (timestamp - lastFrameTime > frameInterval) {
         lastFrameTime = timestamp;
 
-        drawBackground(); // Draw the background first
-        drawBorder(); // Rahmen zeichnen
-        drawScore(); // Punkteanzeige zeichnen
+        drawBackground();
+        drawBorder();
+        drawScore();
 
         if (food.isEaten(snake.segments[0])) {
             food.eatFood();
             food.relocate();
             snake.grow();
-            isEating = true;  // Setze den Essstatus auf true
+            isEating = true;
             setTimeout(() => {
-
-                isEating = false; // Nach 250 ms den Essstatus wieder zurücksetzen
-
+                isEating = false;
             }, 250);
         }
-        
 
         snake.move();
         snake.checkCollision();
         snake.drawSnake(isEating);
-        food.drawFood(ctx); // Draw food only if needed
-        obstacles.drawObstacle(ctx); //Draw obstacles
-        tree.drawTree(ctx); //Draw tree
+        food.drawFood(ctx);
+        obstacles.drawObstacle(ctx);
+        tree.drawTree(ctx);
 
-        if (obstacles.isColliding(snake.segments[0])) {
-            snake.gameOver();
+        // check collision
+        if (obstacles.isColliding(snake.segments[0]) || tree.isColliding(snake.segments[0])) {
+            snake.gameOver(); // stop game
+            isGameOver = true; // set status
         }
-
-        if (tree.isColliding(snake.segments[0])) {
-            snake.gameOver();
-        }
-
     }
 
     requestAnimationFrame(gameLoop);
-}                                             
+}
 
+// Event listener to start the game when the player presses 'Space'
+window.addEventListener('keydown', (event) => {
+    if (event.key === ' ' && !isGameStarted) { // Check for space bar
+        isGameStarted = true;
+        gameLoop(); // Start game immediately when space is pressed
+    }
+});   
+
+// Resizing the canvas and re-setting game objects
 window.addEventListener('resize', () => {
     resizeCanvas();
-    boardWidth = canvas.width;
-    boardHeight = canvas.height;
-
-    snake.boardWidth = boardWidth;
-    snake.boardHeight = boardHeight;
-    snake.blockSize = blockSize;
-
-    food.boardWidth = boardWidth;
-    food.boardHeight = boardHeight;
-    food.blockSize = blockSize;
-
-    food.relocate();
-    snake.drawSnake();
-    drawBackground();  
+    snake.resize(boardWidth, boardHeight, blockSize);
+    food.resize(boardWidth, boardHeight, blockSize);
+    obstacles.resize(boardWidth, boardHeight, blockSize);
+    tree.resize(boardWidth, boardHeight, blockSize);
+    drawBackground();
+    snake.drawSnake();  
 });
-
 
