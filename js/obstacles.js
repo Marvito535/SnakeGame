@@ -10,8 +10,8 @@ class Obstacles {
     }
 
     generatePosition() {
-        const x = Math.floor(Math.random() * (Math.floor(this.boardWidth / this.blockSize) - 3)) * this.blockSize; // Ensure space for 3 blocks
-        const y = Math.floor(Math.random() * (Math.floor(this.boardHeight / this.blockSize))) * this.blockSize;
+        const x = this.boardWidth - this.blockSize *20; 
+        const y = this.boardHeight - this.blockSize * 6; 
         return { x: x, y: y };
     }
 

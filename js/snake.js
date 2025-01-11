@@ -3,11 +3,11 @@ class Snake {
                 dachshundHeadLeft, dachshundRearLeft,
                 dachshundHeadRight, dachshundRearRight,
                 dachshundHeadUp, dachshundRearUp,
-                dachshundHeadDown, dachshundRearDown, dachshundBody, winkel, dachshundMouthOpen) 
+                dachshundHeadDown, dachshundRearDown, dachshundBody, winkel, dachshundMouthOpen, border) 
                 {
 
         const startX = Math.floor(boardWidth / (2 * blockSize)) * blockSize;
-        const startY = Math.floor(boardHeight / (2 * blockSize)) * blockSize;
+        const startY = Math.floor(boardHeight / (2 * blockSize)) * blockSize;    
 
         this.segments = [
             { x: startX, y: startY, direction: 'RIGHT' }, // Head with direction
@@ -19,8 +19,8 @@ class Snake {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         this.blockSize = blockSize;
-        this.isGameOver = false;
         this.ctx = ctx;
+        this.border = border;
 
         this.dachshundHeadLeft = dachshundHeadLeft; 
         this.dachshundHeadDown = dachshundHeadDown;
@@ -84,37 +84,16 @@ class Snake {
         console.log(`Current direction body: ${this.segments[this.segments.length -1].direction}`);
     }
     
-    checkCollision() {
+    isColliding() {
         const head = this.segments[0]; // Kopf der Schlange
-    
-        // Definiere die Heckenhöhe
-        const hedgeHeight = this.blockSize * 1;
-    
-        // Überprüfe Wandkollision (inklusive Hecke)
-        if (
-            head.y < hedgeHeight || // Obere Hecke
-            head.y >= this.boardHeight - hedgeHeight // Untere Hecke
-        ) {
-            this.gameOver(); // Spiel beenden
-            return true;
-        }
-
-         // Wrap-Around für die linke und rechte Seite
-         if (head.x < 0) {
-            head.x = this.boardWidth - this.blockSize; // Links raus -> Rechts wieder rein
-         } 
-         else if (head.x >= this.boardWidth) {
-         head.x = 0; // Rechts raus -> Links wieder rein
-    }
     
         // Überprüfe Selbstkollision
         for (let i = 1; i < this.segments.length; i++) {
             if (this.segments[i].x === head.x && this.segments[i].y === head.y) {
-                this.gameOver(); // Spiel beenden
                 return true;
             }
         }
-    
+
         return false; // Keine Kollision
     }
 
@@ -250,15 +229,8 @@ class Snake {
         }
             
     }
-    
-    
-    gameOver() {
-        alert("Game Over!"); 
-        this.isGameOver = true; 
-    }
 }
 
 export default Snake;
-
 
 

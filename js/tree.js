@@ -10,8 +10,9 @@ class Tree {
     }
 
     generatePosition() {
-        const x = Math.floor(Math.random() * (Math.floor(this.boardWidth / this.blockSize) - 3)) * this.blockSize; // Ensure space for 3 blocks
-        const y = Math.floor(Math.random() * (Math.floor(this.boardHeight / this.blockSize))) * this.blockSize;
+        // Feste Position im oberen rechten Bereich
+        const x = this.boardWidth - this.blockSize *5; 
+        const y = this.boardHeight - this.blockSize * 9; 
         return { x: x, y: y };
     }
 

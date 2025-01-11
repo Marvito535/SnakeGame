@@ -4,6 +4,8 @@ import Obstacles from './obstacles.js';
 import Tree from './tree.js';
 import GameOverScreen from './gameOverScreen.js';
 import StartScreen from './startScreen.js';
+import Border from './border.js';
+
 
 let imagesLoaded = 0;
 const totalImages = 16; 
@@ -82,24 +84,25 @@ const treeImage = new Image();
 treeImage.src = 'TEST.png';
 treeImage.onload = checkAllImagesLoaded;
 
-let boardWidth, boardHeight, blockSize, snake;
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+let boardWidth, boardHeight, blockSize, snake, border;
 
 function onImagesLoaded() {
     resizeCanvas(); // Canvas direkt anpassen
+
+    border = new Border(canvas, blockSize, borderImage, boardWidth, boardHeight);
 
     snake = new Snake(boardWidth, boardHeight, blockSize, ctx, 
                       dachshundHeadLeft, dachshundRearLeft,
                       dachshundHeadRight, dachshundRearRight,
                       dachshundHeadUp, dachshundRearUp,
                       dachshundHeadDown, dachshundRearDown,
-                      dachshundBody, winkel, dachshundMouthOpen);
+                      dachshundBody, winkel, dachshundMouthOpen, border);
 
     document.addEventListener('keydown', handleKeyDown);
     requestAnimationFrame(gameLoop); // Start des Spiels
 }
-
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
 
 function resizeCanvas() {
     const sizeFactor = 10; // Anzahl der Blöcke für die kleinere Dimension
@@ -157,22 +160,6 @@ function drawBackground() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-function drawBorder() {
-
-    const borderWidth = blockSize * 6; // Randbreite
-    const borderHeight = blockSize; // Randhöhe
-
-    // Obere Kante
-    for (let x = 0; x < canvas.width; x += borderWidth) {
-        ctx.drawImage(borderImage, x, 0, borderWidth, borderHeight);
-    }
-
-    // Untere Kante
-    for (let x = 0; x < canvas.width; x += borderWidth) {
-        ctx.drawImage(borderImage, x, canvas.height - borderHeight, borderWidth, borderHeight);
-    }
-}
-
 function drawScore() {
     ctx.font = `${blockSize/2}px Arial`; // Schriftgröße basierend auf Blockgröße
     ctx.fillStyle = 'red'; 
@@ -182,8 +169,14 @@ function drawScore() {
 }
 
 let isEating = false;
-let isGameOver = false; // Status for Game Over
 let isGameStarted = false; // Boolean to check if the game has started
+let gameEndAlert = false;
+let isGameOver = false; // Status for Game Over
+
+function gameOver() {
+    alert("Game Over!"); 
+    gameEndAlert = true; 
+}
 
 function gameLoop(timestamp) {
     if (!isGameStarted) {
@@ -201,9 +194,6 @@ function gameLoop(timestamp) {
         lastFrameTime = timestamp;
 
         drawBackground();
-        drawBorder();
-        drawScore();
-
         if (food.isEaten(snake.segments[0])) {
             food.eatFood();
             food.relocate();
@@ -215,15 +205,18 @@ function gameLoop(timestamp) {
         }
 
         snake.move();
-        snake.checkCollision();
+        snake.isColliding();
+        border.draw(ctx);
+        drawScore();
         snake.drawSnake(isEating);
-        food.drawFood(ctx);
         obstacles.drawObstacle(ctx);
         tree.drawTree(ctx);
+        food.drawFood(ctx);
 
         // check collision
-        if (obstacles.isColliding(snake.segments[0]) || tree.isColliding(snake.segments[0])) {
-            snake.gameOver(); // stop game
+        if (obstacles.isColliding(snake.segments[0]) || tree.isColliding(snake.segments[0]) || border.isColliding(snake.segments[0]) || snake.isColliding(snake.segments[0]))
+             {
+            gameOver(); // stop game
             isGameOver = true; // set status
         }
     }
@@ -246,6 +239,7 @@ window.addEventListener('resize', () => {
     food.resize(boardWidth, boardHeight, blockSize);
     obstacles.resize(boardWidth, boardHeight, blockSize);
     tree.resize(boardWidth, boardHeight, blockSize);
+    border.resize(boardWidth, boardHeight, blockSize);
     drawBackground();
     snake.drawSnake();  
 });
