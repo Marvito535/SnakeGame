@@ -1,7 +1,7 @@
 import Food from './food.js';
 import Snake from './snake.js';
-import Obstacles from './obstacles.js';
-import Tree from './tree.js';
+import Rabbit from './rabbit.js';
+import Rat from './rat.js';
 import GameOverScreen from './gameOverScreen.js';
 import StartScreen from './startScreen.js';
 import Border from './border.js';
@@ -143,8 +143,8 @@ function resizeCanvas() {
 resizeCanvas();
 
 let food = new Food(boardWidth, boardHeight, blockSize, strawberryImage );
-let obstacles = new Obstacles(boardWidth, boardHeight, blockSize, rabbitImage, rabbitImageTwo, rabbitImageThree);
-let tree = new Tree(boardWidth, boardHeight, blockSize, ratImage, ratImageTwo, ratImageThree);
+let rabbit = new Rabbit(boardWidth, boardHeight, blockSize, rabbitImage, rabbitImageTwo, rabbitImageThree);
+let rat = new Rat(boardWidth, boardHeight, blockSize, ratImage, ratImageTwo, ratImageThree);
 const gameOverScreen = new GameOverScreen();
 const startScreen = new StartScreen();
 
@@ -225,12 +225,12 @@ function gameLoop(timestamp) {
         border.draw(ctx);
         drawScore();
         snake.drawSnake(isEating);
-        obstacles.drawObstacle(ctx);
-        tree.drawTree(ctx);
+        rabbit.drawRabbit(ctx);
+        rat.drawRat(ctx);
         food.drawFood(ctx);
 
         // check collision
-        if (obstacles.isColliding(snake.segments[0]) || tree.isColliding(snake.segments[0]) || border.isColliding(snake.segments[0]) || snake.isColliding(snake.segments[0]))
+        if (rabbit.isColliding(snake.segments[0]) || rat.isColliding(snake.segments[0]) || border.isColliding(snake.segments[0]) || snake.isColliding(snake.segments[0]))
              {
             gameOver(); // stop game
             isGameOver = true; // set status
@@ -253,8 +253,8 @@ window.addEventListener('resize', () => {
     resizeCanvas();
     snake.resize(boardWidth, boardHeight, blockSize);
     food.resize(boardWidth, boardHeight, blockSize);
-    obstacles.resize(boardWidth, boardHeight, blockSize);
-    tree.resize(boardWidth, boardHeight, blockSize);
+    rabbit.resize(boardWidth, boardHeight, blockSize);
+    rat.resize(boardWidth, boardHeight, blockSize);
     border.resize(boardWidth, boardHeight, blockSize);
     drawBackground();
     snake.drawSnake();  

@@ -1,4 +1,4 @@
-class Obstacles {
+class Rabbit {
     constructor(boardWidth, boardHeight, blockSize, rabbitImage, rabbitImageTwo, rabbitImageThree) {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
@@ -16,7 +16,7 @@ class Obstacles {
         return { x: x, y: y };
     }
 
-    drawObstacle(ctx) {
+    drawRabbit(ctx) {
         
             ctx.drawImage(this.rabbitImage, this.position.x, this.position.y, this.blockSize, this.blockSize);
             ctx.drawImage(this.rabbitImageTwo, this.position.x + 1 * this.blockSize, this.position.y, this.blockSize, this.blockSize);
@@ -34,4 +34,4 @@ class Obstacles {
 
 }
 
-export default Obstacles;
+export default Rabbit;

@@ -1,4 +1,4 @@
-class Tree {
+class Rat {
     constructor(boardWidth, boardHeight, blockSize, ratImage,ratImageTwo, ratImageThree) {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
@@ -17,7 +17,7 @@ class Tree {
         return { x: x, y: y };
     }
 
-    drawTree(ctx) {
+    drawRat(ctx) {
 
             ctx.drawImage(this.ratImage, this.position.x, this.position.y, this.blockSize, this.blockSize);
             ctx.drawImage(this.ratImageTwo, this.position.x, this.position.y + this.blockSize, this.blockSize, this.blockSize);
@@ -35,4 +35,4 @@ class Tree {
 
 }
 
-export default Tree;
+export default Rat;
