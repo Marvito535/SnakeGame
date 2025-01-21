@@ -1,11 +1,12 @@
 class Tree {
-    constructor(boardWidth, boardHeight, blockSize, treeImage) {
+    constructor(boardWidth, boardHeight, blockSize, ratImage,ratImageTwo, ratImageThree) {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         this.blockSize = blockSize;
         this.position = this.generatePosition();
-        this.treeImage = treeImage; // Save the obstacle image
-        this.width = this.blockSize; // Width remains 1 block
+        this.ratImage = ratImage;
+        this.ratImageTwo = ratImageTwo;
+        this.ratImageThree = ratImageThree;
         this.height = 3 * this.blockSize; // Set height to 3 blocks
     }
 
@@ -17,13 +18,11 @@ class Tree {
     }
 
     drawTree(ctx) {
-        console.log(`Drawing tree at (${this.position.x}, ${this.position.y}) with size ${this.width}x${this.height}`);
-        
-        // Zeichne das Bild 3-mal nebeneinander
-        for (let i = 0; i < 3; i++) {
-            ctx.drawImage(this.treeImage, this.position.x, this.position.y + i * this.blockSize, this.blockSize, this.width);
+
+            ctx.drawImage(this.ratImage, this.position.x, this.position.y, this.blockSize, this.blockSize);
+            ctx.drawImage(this.ratImageTwo, this.position.x, this.position.y + this.blockSize, this.blockSize, this.blockSize);
+            ctx.drawImage(this.ratImageThree, this.position.x, this.position.y + 2*this.blockSize, this.blockSize, this.blockSize);
         }
-    }
 
     isColliding(snakePosition) {
         // Check if snake's head collides with any part of the obstacle

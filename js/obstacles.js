@@ -1,12 +1,13 @@
 class Obstacles {
-    constructor(boardWidth, boardHeight, blockSize, obstacleImage) {
+    constructor(boardWidth, boardHeight, blockSize, rabbitImage, rabbitImageTwo, rabbitImageThree) {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         this.blockSize = blockSize;
         this.position = this.generatePosition();
-        this.obstacleImage = obstacleImage; // Save the obstacle image
+        this.rabbitImage = rabbitImage;
+        this.rabbitImageTwo = rabbitImageTwo;
+        this.rabbitImageThree = rabbitImageThree;
         this.width = 3 * this.blockSize; // Set width to 3 blocks
-        this.height = this.blockSize; // Height remains 1 block
     }
 
     generatePosition() {
@@ -16,13 +17,11 @@ class Obstacles {
     }
 
     drawObstacle(ctx) {
-        console.log(`Drawing obstacle at (${this.position.x}, ${this.position.y}) with size ${this.width}x${this.height}`);
         
-        // Zeichne das Bild 3-mal nebeneinander
-        for (let i = 0; i < 3; i++) {
-            ctx.drawImage(this.obstacleImage, this.position.x + i * this.blockSize, this.position.y, this.blockSize, this.height);
+            ctx.drawImage(this.rabbitImage, this.position.x, this.position.y, this.blockSize, this.blockSize);
+            ctx.drawImage(this.rabbitImageTwo, this.position.x + 1 * this.blockSize, this.position.y, this.blockSize, this.blockSize);
+            ctx.drawImage(this.rabbitImageThree, this.position.x + 2 * this.blockSize, this.position.y, this.blockSize, this.blockSize);
         }
-    }
 
     isColliding(snakePosition) {
         // Check if snake's head collides with any part of the obstacle

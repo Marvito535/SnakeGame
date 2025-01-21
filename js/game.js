@@ -8,7 +8,7 @@ import Border from './border.js';
 
 
 let imagesLoaded = 0;
-const totalImages = 16; 
+const totalImages = 20; 
 
 function checkAllImagesLoaded() {
     imagesLoaded++;
@@ -76,13 +76,29 @@ const dachshundMouthOpen = new Image();
 dachshundMouthOpen.src = 'dachshund_mouth_open.png';
 dachshundMouthOpen.onload = checkAllImagesLoaded;
 
-const obstacleImage = new Image();
-obstacleImage.src = 'TEST.png';
-obstacleImage.onload = checkAllImagesLoaded;
+const rabbitImage = new Image();
+rabbitImage.src = 'rabbit_part1.png';
+rabbitImage.onload = checkAllImagesLoaded;
 
-const treeImage = new Image();
-treeImage.src = 'TEST.png';
-treeImage.onload = checkAllImagesLoaded;
+const rabbitImageTwo = new Image();
+rabbitImageTwo.src = 'rabbit_part2.png';
+rabbitImageTwo.onload = checkAllImagesLoaded;
+
+const rabbitImageThree = new Image();
+rabbitImageThree.src = 'rabbit_part3.png';
+rabbitImageThree.onload = checkAllImagesLoaded;
+
+const ratImage = new Image();
+ratImage.src = 'rat_part1.png';
+ratImage.onload = checkAllImagesLoaded;
+
+const ratImageTwo = new Image();
+ratImageTwo.src = 'rat_part2.png';
+ratImageTwo.onload = checkAllImagesLoaded;
+
+const ratImageThree = new Image();
+ratImageThree.src = 'rat_part3.png';
+ratImageThree.onload = checkAllImagesLoaded;
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -127,8 +143,8 @@ function resizeCanvas() {
 resizeCanvas();
 
 let food = new Food(boardWidth, boardHeight, blockSize, strawberryImage );
-let obstacles = new Obstacles(boardWidth, boardHeight, blockSize, obstacleImage);
-let tree = new Tree(boardWidth, boardHeight, blockSize, treeImage);
+let obstacles = new Obstacles(boardWidth, boardHeight, blockSize, rabbitImage, rabbitImageTwo, rabbitImageThree);
+let tree = new Tree(boardWidth, boardHeight, blockSize, ratImage, ratImageTwo, ratImageThree);
 const gameOverScreen = new GameOverScreen();
 const startScreen = new StartScreen();
 

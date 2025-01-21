@@ -16,13 +16,17 @@ class Food {
             const x = Math.floor(Math.random() * (Math.floor(this.boardWidth / this.blockSize))) * this.blockSize;
             const y = Math.floor(Math.random() * (Math.floor(this.boardHeight / this.blockSize))) * this.blockSize;
             position = { x: x, y: y };
-        } while (this.isCollidingWithBorder(position)); // Überprüfe Kollision mit Border
+        } while (this.isCollidingWithObstacle(position)); // Überprüfe Kollision mit Border
         return position;
     }
 
-    isCollidingWithBorder(position) {
+    isCollidingWithObstacle(position) {
         const hedgeHeight = this.blockSize;
-        return position.y < hedgeHeight || position.y >= this.boardHeight - hedgeHeight || position.x == this.boardWidth - this.blockSize *5 && position.y == this.boardHeight - this.blockSize * 9 ;
+
+        return position.y < hedgeHeight 
+        || position.y >= this.boardHeight - hedgeHeight 
+        || position.x == this.boardWidth - this.blockSize *5 && position.y == this.boardHeight - this.blockSize * 9 
+        || position.x == this.boardWidth - this.blockSize *20 && position.y == this.boardHeight - this.blockSize * 6; 
     }
 
     drawFood(ctx) {
