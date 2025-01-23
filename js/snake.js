@@ -3,7 +3,7 @@ class Snake {
                 dachshundHeadLeft, dachshundRearLeft,
                 dachshundHeadRight, dachshundRearRight,
                 dachshundHeadUp, dachshundRearUp,
-                dachshundHeadDown, dachshundRearDown, dachshundBody, winkel, dachshundMouthOpen, border) 
+                dachshundHeadDown, dachshundRearDown, dachshundBody, angle, dachshundMouthOpen, border) 
                 {
 
         const startX = Math.floor(boardWidth / (2 * blockSize)) * blockSize;
@@ -33,7 +33,7 @@ class Snake {
         this.dachshundRearDown = dachshundRearDown;
 
         this.dachshundBody = dachshundBody;
-        this.winkel = winkel;
+        this.angle = angle;
 
         this.dachshundMouthOpen = dachshundMouthOpen;
       
@@ -198,25 +198,25 @@ class Snake {
                 (currentSegment.direction === 'LEFT' && nextSegment.direction === 'DOWN') ||
                 (currentSegment.direction === 'UP' && nextSegment.direction === 'RIGHT')
             ) {
-                segmentImage = this.winkel;
+                segmentImage = this.angle;
                 flipHorizontally = true;
             } else if (
                 (currentSegment.direction === 'RIGHT' && nextSegment.direction === 'DOWN') ||
                 (currentSegment.direction === 'UP' && nextSegment.direction === 'LEFT')
             ) {
-                segmentImage = this.winkel;
+                segmentImage = this.angle;
 
             } else if (
                 (currentSegment.direction === 'LEFT' && nextSegment.direction === 'UP') ||
                 (currentSegment.direction === 'DOWN' && nextSegment.direction === 'RIGHT')
             ) {
-                segmentImage = this.winkel;
+                segmentImage = this.angle;
                 bodyRotation = 180; 
             } else if (
                 (currentSegment.direction === 'DOWN' && nextSegment.direction === 'LEFT') ||
                 (currentSegment.direction === 'RIGHT' && nextSegment.direction === 'UP')
             ) { 
-                segmentImage = this.winkel;
+                segmentImage = this.angle;
                 flipVertically = true;
         
             }  else if (currentSegment.direction === 'RIGHT' || currentSegment.direction === 'LEFT')

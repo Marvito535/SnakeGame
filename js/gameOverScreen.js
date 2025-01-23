@@ -14,11 +14,6 @@ class GameOverScreen {
         context.fillStyle = "white";
         context.font = "24px Arial";
         context.fillText(`Your Score: ${totalPoints}`, canvasWidth / 2, canvasHeight / 2);
-
-        // Restart-Anweisung
-        context.fillStyle = "yellow";
-        context.font = "18px Arial";
-        context.fillText("Press R to Restart", canvasWidth / 2, canvasHeight / 2 + 50);
     }
 }
 

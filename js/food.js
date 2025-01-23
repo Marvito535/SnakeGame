@@ -47,13 +47,6 @@ class Food {
         this.position = this.generatePosition();
         console.log(`Food relocated to (${this.position.x}, ${this.position.y})`);
     }
-
-    resize(newBoardWidth, newBoardHeight, newBlockSize) {
-        this.boardWidth = newBoardWidth;
-        this.boardHeight = newBoardHeight;
-        this.blockSize = newBlockSize;
-        this.position = this.generatePosition(); // Position nach Resize neu generieren
-    }
 }
 
 export default Food;

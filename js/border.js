@@ -41,9 +41,5 @@ class Border {
          snakePosition.x = 0; // Rechts raus -> Links wieder rein
      }
     }
-
-    resize(newBlockSize) {
-        this.blockSize = newBlockSize;
-    }
 }
 export default Border;
