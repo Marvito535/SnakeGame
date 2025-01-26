@@ -6,6 +6,11 @@
     <title>Snake Game</title>
     <link rel="stylesheet" href="../css/styles.css">
 </head>
+<style>
+    h2 {
+        text-align: center; 
+    }
+</style>
 <body>
     <canvas id="gameCanvas"></canvas>
     <script type="module" src="js/snake.js"></script>
@@ -16,57 +21,14 @@
     <script type="module" src="js/rabbit.js"></script> 
     <script type="module" src="js/rat.js"></script>  
     <script type="module" src="js/startScreen.js"></script>
+    <script type="module" src="js/highscoreScreen.js"></script>
+    <script type="module" src="js/highscoreManager.js"></script>
+
     
     <div>
-        <h2>Highscores</h2>
+        <h2>Top 10</h2>
         <ul id="highscore-list"></ul>
     </div>
-    
-    <script>
-        const apiBaseUrl = 'http://localhost:3000/api';
 
-        async function fetchHighscores() {
-            try {
-                const response = await fetch(`${apiBaseUrl}/highscores`);
-                const highscores = await response.json();
-                displayHighscores(highscores);
-            } catch (error) {
-                console.error('Error fetching highscores:', error);
-            }
-        }
-
-        async function saveHighscore(name, score) {
-            try {
-                const response = await fetch(`${apiBaseUrl}/highscores`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, score }),
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to save highscore');
-                }
-
-                fetchHighscores();
-            } catch (error) {
-                console.error('Error saving highscore:', error);
-            }
-        }
-
-        function displayHighscores(highscores) {
-            const highscoreList = document.getElementById('highscore-list');
-            highscoreList.innerHTML = '';
-
-            highscores.forEach(({ name, score }) => {
-                const li = document.createElement('li');
-                li.textContent = `${name}: ${score}`;
-                highscoreList.appendChild(li);
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchHighscores();
-        });
-    </script>
 </body>
 </html>

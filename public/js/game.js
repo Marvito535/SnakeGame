@@ -6,10 +6,12 @@ import Rat from './rat.js';
 import GameOverScreen from './gameOverScreen.js';
 import StartScreen from './startScreen.js';
 import Border from './border.js';
+import HighscoreManager from './highscoreManager.js';
+import HighscoreScreen from './highscoreScreen.js';
 
 const canvas = document.getElementById('gameCanvas'); // find id using the DOM model, assign gameCanvas(canvas from .html) to a variable canvas
 const ctx = canvas.getContext('2d'); // request 2d context, declare this as variable ctx
-let boardWidth, boardHeight, blockSize, snake, border, food, rabbit, rat, gameOverScreen, startScreen; // declare variables
+let boardWidth, boardHeight, blockSize, snake, border, food, rabbit, rat, gameOverScreen, startScreen, playerName, highscores = [];; // declare variables
 
 let imagesLoaded = 0; //declare variable and assign value
 const totalImages = 20; //declare constant variable and assign value
@@ -102,6 +104,9 @@ const ratImageThree = new Image();
 ratImageThree.src = './assets/rat_part3.png';
 ratImageThree.onload = checkAllImagesLoaded;
 
+const highscoreManager = new HighscoreManager('http://localhost:3000');
+const highscoreScreen = new HighscoreScreen();
+
 function onImagesLoaded() { // This function will only be executed if all 20 images are loaded
     resizeCanvas(); // executes function 
 
@@ -118,8 +123,9 @@ function onImagesLoaded() { // This function will only be executed if all 20 ima
     rat = new Rat(boardWidth, boardHeight, blockSize, ratImage, ratImageTwo, ratImageThree);
     gameOverScreen = new GameOverScreen();
     startScreen = new StartScreen();
+    
 
-    document.addEventListener('keydown', handleKeyDown); // set arrow keys to which the dog/snake should react, 
+    document.addEventListener('keydown', handleKeyDown); // keydown event is registered 
     requestAnimationFrame(gameLoop); // start the loop(frame update), is needed at this point to display the start screen
 }
 
@@ -167,70 +173,47 @@ function handleKeyDown(event) { //Assign a direction to arrow keys
     }
 }
 
-const frameRate = 5 // Anzahl der Bewegungen pro Sekunde
-const frameInterval = 1000 / frameRate;
-let lastFrameTime = 0;
-
 function drawBackground() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-    const pattern = ctx.createPattern(backgroundImage, 'repeat');
-    ctx.fillStyle = pattern;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas, prevents flickering in the game
+    const pattern = ctx.createPattern(backgroundImage, 'repeat'); //the image is repeated
+    ctx.fillStyle = pattern; //the pattern is used as a fill color
+    ctx.fillRect(0, 0, canvas.width, canvas.height); //draw rectangles starting at o,o
 }
 
 function drawScore() {
-    ctx.font = `${blockSize/2}px Arial`; // Schriftgröße basierend auf Blockgröße
+    ctx.font = `${blockSize/2}px Arial`; //Font size based on block size
     ctx.fillStyle = 'red'; 
     ctx.textAlign = 'left'; 
     const scoreText = `Points: ${food.totalPoints}`;
-    ctx.fillText(scoreText, blockSize, blockSize / 1.5); // Punkte oben links zeichnen
+    ctx.fillText(scoreText, blockSize, blockSize / 1.5); //Draw points at the top left
 }
 
-function saveHighscore(playerName, score) {
-    if (!playerName) return; // Ignoriere, wenn kein Name eingegeben wurde
-    const highscores = JSON.parse(localStorage.getItem('highscores')) || [];
-    highscores.push({ name: playerName, score });
-    highscores.sort((a, b) => b.score - a.score); // Sortiere absteigend nach Score
-    localStorage.setItem('highscores', JSON.stringify(highscores.slice(0, 10))); // Speichere nur die Top 10
-}
-
-function displayHighscores(ctx, width, height) {
-    const highscores = JSON.parse(localStorage.getItem('highscores')) || [];
-    ctx.font = '20px Arial';
-    ctx.fillStyle = 'white';
-    ctx.textAlign = 'center';
-    ctx.fillText('Highscores', width / 2, height / 4);
-    highscores.forEach((entry, index) => {
-        ctx.fillText(
-            `${index + 1}. ${entry.name} - ${entry.score}`,
-            width / 2,
-            height / 4 + 30 * (index + 1)
-        );
-    });
-}
+const frameRate = 5 // Number of movements per second
+const frameInterval = 1000 / frameRate; //This calculates the time interval between two consecutive frames in milliseconds.
+let lastFrameTime = 0; //This determines whether enough time has passed since the last frame to render the next frame.
 
 function gameLoop(timestamp) {
   
     if (!isGameStarted) {
         // Show the start screen before the game starts
         startScreen.display(ctx, canvas.width, canvas.height);
+        highscoreManager.fetchHighscores(); // Abrufen der Highscores
         return; // Wait for the player to start the game
     }
 
     if (isPaused) {
-        return; // Wait for the player to start the game
+        return; // Wait for the player to continue the game
     }
 
     if (isGameOver) {
-        if (!gameOverScreen.shown) { // Verhindere, dass der Highscore mehrmals abgefragt wird
-            const playerName = prompt('Game Over! Enter your name:');
-            saveHighscore(playerName, food.totalPoints);
-            gameOverScreen.shown = true; // Markiere, dass der Bildschirm gezeigt wurde
+        if (!gameOverScreen.shown) {
+            gameOverScreen.shown = true;
+            playerName = prompt("Enter your name:");
         }
-        drawBackground();
         gameOverScreen.display(ctx, canvas.width, canvas.height, food.totalPoints);
-        displayHighscores(ctx, canvas.width, canvas.height); // Zeige Highscores an
-        return; // Beende den Loop
+        highscoreManager.saveHighscore(playerName, food.totalPoints);
+        highscoreScreen.displayHighscores(highscores);
+        return;
     }
 
     if (timestamp - lastFrameTime > frameInterval) {
