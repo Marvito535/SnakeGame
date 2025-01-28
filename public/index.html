@@ -4,31 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Game</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
-<style>
-    h2 {
-        text-align: center; 
-    }
-</style>
 <body>
     <canvas id="gameCanvas"></canvas>
+
+    <!-- Highscore-Screen -->
+    <div id="highscore-screen"> 
+        <h2>Top 10</h2>
+        <ul id="highscore-list"></ul>
+    </div>
+
     <script type="module" src="js/snake.js"></script>
     <script type="module" src="js/food.js"></script>
     <script type="module" src="js/game.js"></script>
     <script type="module" src="js/border.js"></script>
     <script type="module" src="js/gameOverScreen.js"></script>
-    <script type="module" src="js/rabbit.js"></script> 
-    <script type="module" src="js/rat.js"></script>  
+    <script type="module" src="js/rabbit.js"></script>
+    <script type="module" src="js/rat.js"></script>
     <script type="module" src="js/startScreen.js"></script>
     <script type="module" src="js/highscoreScreen.js"></script>
     <script type="module" src="js/highscoreManager.js"></script>
-
-    
-    <div>
-        <h2>Top 10</h2>
-        <ul id="highscore-list"></ul>
-    </div>
-
 </body>
 </html>

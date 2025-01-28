@@ -4,10 +4,45 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: white;
+    background-color: #FFD700;
 }
 
-canvas {
-    background-color: white;
-    border: 2px solid #ccc;
+#highscore-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black; /* Hintergrundfarbe */
+    color: white; /* Schriftfarbe */
+    z-index: 10; /* Überlagert das Canvas */
+}
+
+/* Überschrift zentriert */
+#highscore-screen h2 {
+    margin: 0;
+    font-size: 3rem;
+    text-align: center;
+}
+
+#highscore-screen {
+display: none; 
+}
+
+
+/* Highscore-Liste anpassen */
+#highscore-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0 0;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+#highscore-list li {
+    margin: 5px 0;
 }

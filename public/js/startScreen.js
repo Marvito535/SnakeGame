@@ -18,6 +18,10 @@ class StartScreen {
         // Other instructions or credits
         context.font = "18px Arial";
         context.fillText("Use Arrow keys to control", canvasWidth / 2, canvasHeight / 2 + 50);
+
+         // Other instructions or credits
+         context.font = "18px Arial";
+         context.fillText("'Click' for music", canvasWidth / 2, canvasHeight / 2 + 100);
     }
 }
 

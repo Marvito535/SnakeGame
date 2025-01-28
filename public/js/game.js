@@ -11,7 +11,7 @@ import HighscoreScreen from './highscoreScreen.js';
 
 const canvas = document.getElementById('gameCanvas'); // find id using the DOM model, assign gameCanvas(canvas from .html) to a variable canvas
 const ctx = canvas.getContext('2d'); // request 2d context, declare this as variable ctx
-let boardWidth, boardHeight, blockSize, snake, border, food, rabbit, rat, gameOverScreen, startScreen, playerName, highscores = [];; // declare variables
+let boardWidth, boardHeight, blockSize, snake, border, food, rabbit, rat, gameOverScreen, startScreen, playerName, highscores = []; // declare variables
 
 let imagesLoaded = 0; //declare variable and assign value
 const totalImages = 20; //declare constant variable and assign value
@@ -106,6 +106,7 @@ ratImageThree.onload = checkAllImagesLoaded;
 
 const highscoreManager = new HighscoreManager('http://localhost:3000');
 const highscoreScreen = new HighscoreScreen();
+const backgroundMusic = new Audio('./assets/sounds/soft-guitar.mp3');
 
 function onImagesLoaded() { // This function will only be executed if all 20 images are loaded
     resizeCanvas(); // executes function 
@@ -192,29 +193,41 @@ const frameRate = 5 // Number of movements per second
 const frameInterval = 1000 / frameRate; //This calculates the time interval between two consecutive frames in milliseconds.
 let lastFrameTime = 0; //This determines whether enough time has passed since the last frame to render the next frame.
 
+backgroundMusic.loop = true; // repeat the music
+backgroundMusic.volume = 1; // volume
+backgroundMusic.play(); // start music
+
 function gameLoop(timestamp) {
   
     if (!isGameStarted) {
         // Show the start screen before the game starts
         startScreen.display(ctx, canvas.width, canvas.height);
-        highscoreManager.fetchHighscores(); // Abrufen der Highscores
         return; // Wait for the player to start the game
     }
 
     if (isPaused) {
         return; // Wait for the player to continue the game
     }
-
     if (isGameOver) {
         if (!gameOverScreen.shown) {
             gameOverScreen.shown = true;
-            playerName = prompt("Enter your name:");
+            gameOverScreen.display(ctx, canvas.width, canvas.height, food.totalPoints); // Zeige den Game-Over-Bildschirm an
+    
+            // Verzögere die Anzeige des Prompts
+            setTimeout(() => {
+                const playerName = prompt("Enter your name:"); // Warte auf die Eingabe des Namens
+    
+                if (playerName) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // Lösche den Canvas erst nach der Eingabe
+                document.getElementById('highscore-screen').style.display = 'flex';
+                highscoreManager.saveHighscore(playerName, food.totalPoints);
+                highscoreScreen.displayHighscores(highscores); // Überprüfe, ob der Spieler tatsächlich einen Namen eingegeben hat
+                }
+            }, 100); // Warte 100ms, damit der Game-Over-Bildschirm sichtbar ist
         }
-        gameOverScreen.display(ctx, canvas.width, canvas.height, food.totalPoints);
-        highscoreManager.saveHighscore(playerName, food.totalPoints);
-        highscoreScreen.displayHighscores(highscores);
         return;
     }
+    
 
     if (timestamp - lastFrameTime > frameInterval) {
         lastFrameTime = timestamp;
@@ -261,6 +274,12 @@ function initializeEventListeners() {
                 requestAnimationFrame(gameLoop);
             }
         }
+    });
+
+    document.addEventListener('click', () => {
+        backgroundMusic.play().catch(error => {
+            console.error('Audio konnte nicht abgespielt werden:', error);
+        });
     });
 
     window.addEventListener('resize', () => {

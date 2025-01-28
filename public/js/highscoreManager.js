@@ -3,24 +3,7 @@ import HighscoreScreen from './highscoreScreen.js';
 class HighscoreManager {
     constructor(apiUrl) {
         this.apiUrl = apiUrl;
-        this.highscoreScreen = new HighscoreScreen(); // Instanziiere HighscoreScreen korrekt
-    }
-
-    // Methode zum Abrufen der Highscores
-    fetchHighscores() {
-        fetch(`${this.apiUrl}/api/highscores`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data); // Logge die erhaltenen Daten
-                if (data.highscores) {
-                    this.highscoreScreen.displayHighscores(data.highscores); 
-                } else {
-                    console.error('Fehler: Highscores konnten nicht abgerufen werden');
-                }
-            })
-            .catch(error => {
-                console.error('Fehler beim Abrufen der Highscores:', error);
-            });
+        this.highscoreScreen = new HighscoreScreen(); 
     }
 
     // Methode zum Speichern eines neuen Highscores
