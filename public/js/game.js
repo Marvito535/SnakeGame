@@ -11,7 +11,7 @@ import HighscoreScreen from './highscoreScreen.js';
 
 const canvas = document.getElementById('gameCanvas'); // find id using the DOM model, assign gameCanvas(canvas from .html) to a variable canvas
 const ctx = canvas.getContext('2d'); // request 2d context, declare this as variable ctx
-let boardWidth, boardHeight, blockSize, snake, border, food, rabbit, rat, gameOverScreen, startScreen, playerName, highscores = []; // declare variables
+let boardWidth, boardHeight, blockSize, snake, border, food, rabbit, rat, gameOverScreen, startScreen // declare variables
 
 let imagesLoaded = 0; //declare variable and assign value
 const totalImages = 20; //declare constant variable and assign value
@@ -197,43 +197,41 @@ backgroundMusic.loop = true; // repeat the music
 backgroundMusic.volume = 1; // volume
 backgroundMusic.play(); // start music
 
-function gameLoop(timestamp) {
+function gameLoop(timestamp) { 
   
-    if (!isGameStarted) {
-        // Show the start screen before the game starts
-        startScreen.display(ctx, canvas.width, canvas.height);
+    if (!isGameStarted) {       //condition true here first time
+        startScreen.display(ctx, canvas.width, canvas.height);    // Show the start screen before the game starts
         return; // Wait for the player to start the game
     }
 
-    if (isPaused) {
+    if (isPaused) { //condition false without trigger
         return; // Wait for the player to continue the game
     }
-    if (isGameOver) {
+    if (isGameOver) { //condition false without trigger
         if (!gameOverScreen.shown) {
             gameOverScreen.shown = true;
-            gameOverScreen.display(ctx, canvas.width, canvas.height, food.totalPoints); // Zeige den Game-Over-Bildschirm an
+            gameOverScreen.display(ctx, canvas.width, canvas.height, food.totalPoints); // Display the Game Over screen
     
-            // Verzögere die Anzeige des Prompts
+            // Delay the display of the prompt
             setTimeout(() => {
-                const playerName = prompt("Enter your name:"); // Warte auf die Eingabe des Namens
+                const playerName = prompt("Enter your name:"); // Wait for the name to be entered
     
                 if (playerName) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height); // Lösche den Canvas erst nach der Eingabe
-                document.getElementById('highscore-screen').style.display = 'flex';
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // Don't delete the canvas until typing is executed 
+                document.getElementById('highscore-screen').style.display = 'flex'; //make highscore screen visible
                 highscoreManager.saveHighscore(playerName, food.totalPoints);
-                highscoreScreen.displayHighscores(highscores); // Überprüfe, ob der Spieler tatsächlich einen Namen eingegeben hat
                 }
-            }, 100); // Warte 100ms, damit der Game-Over-Bildschirm sichtbar ist
+            }, 100); // Wait 100ms for the game over screen to be visible
         }
         return;
     }
     
 
-    if (timestamp - lastFrameTime > frameInterval) {
+    if (timestamp - lastFrameTime > frameInterval) { //calculation of speed
         lastFrameTime = timestamp;
 
-        drawBackground();
-        if (food.isEaten(snake.segments[0])) {
+        drawBackground();                              //draw background first
+        if (food.isEaten(snake.segments[0])) {         //execute methods from other classes
             food.eatFood();
             food.relocate();
             snake.grow();
@@ -243,10 +241,10 @@ function gameLoop(timestamp) {
             }, 250);
         }
 
-        snake.move();
+        snake.move();                             //more methods
         snake.isColliding();
         border.draw(ctx);
-        drawScore();
+        drawScore();                            //draw score
         snake.drawSnake(isEating);
         rabbit.drawRabbit(ctx);
         rat.drawRat(ctx);
@@ -259,16 +257,16 @@ function gameLoop(timestamp) {
         }
     }
 
-  requestAnimationFrame(gameLoop);
+  requestAnimationFrame(gameLoop); //restart loop
 }
 
-function initializeEventListeners() {
+function initializeEventListeners() {               //bundle Keylisteners
     window.addEventListener('keydown', (event) => {
         if (event.key === ' ') {
             isGameStarted = true;
-            gameLoop();
-        } else if (event.key === 'p') {
-            isPaused = !isPaused;
+            gameLoop();                            //start the game by typing space bar 
+        } else if (event.key === 'p') {            //pause game with p
+            isPaused = !isPaused;         
             if (!isPaused) {
                 lastFrameTime = performance.now();
                 requestAnimationFrame(gameLoop);
@@ -276,21 +274,15 @@ function initializeEventListeners() {
         }
     });
 
-    document.addEventListener('click', () => {
+    document.addEventListener('click', () => {     //click for play music
         backgroundMusic.play().catch(error => {
-            console.error('Audio konnte nicht abgespielt werden:', error);
+            console.error('Audio could not be played:', error);
         });
     });
 
-    window.addEventListener('resize', () => {
-        resizeCanvas();
-        snake.resize(boardWidth, boardHeight, blockSize);
-        food.resize(boardWidth, boardHeight, blockSize);
-        rabbit.resize(boardWidth, boardHeight, blockSize);
-        rat.resize(boardWidth, boardHeight, blockSize);
-        border.resize(boardWidth, boardHeight, blockSize);
-        drawBackground();
-        snake.drawSnake();
+    window.addEventListener('resize', () => { // Game is over when resize
+        resizeCanvas()
+        isGameOver = true; 
     });
 }
 initializeEventListeners();

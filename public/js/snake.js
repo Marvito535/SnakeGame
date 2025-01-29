@@ -224,7 +224,6 @@ class Snake {
                 bodyRotation = 90; 
             }
 
-                
             this.drawSegment(segmentImage, currentSegment.x, currentSegment.y, segmentSize, segmentSize, bodyRotation, flipHorizontally, flipVertically);
         }
             

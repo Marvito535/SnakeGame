@@ -32,7 +32,12 @@ class Rat {
             snakePosition.x === this.position.x
         );
     }
-
+    
+    resize(boardWidth, boardHeight, blockSize) {
+        this.boardWidth = boardWidth;  // Neues Board-Breite
+        this.boardHeight = boardHeight;  // Neues Board-Höhe
+        this.blockSize = blockSize;  // Neue Blockgröße
+    }
 }
 
 export default Rat;

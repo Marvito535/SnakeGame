@@ -41,5 +41,11 @@ class Border {
          snakePosition.x = 0; // Rechts raus -> Links wieder rein
      }
     }
+    
+    resize(boardWidth, boardHeight, blockSize) {
+        this.boardWidth = boardWidth;  // Neues Board-Breite
+        this.boardHeight = boardHeight;  // Neues Board-Höhe
+        this.blockSize = blockSize;  // Neue Blockgröße
+    }
 }
 export default Border;

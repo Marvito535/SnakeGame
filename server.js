@@ -12,16 +12,6 @@ app.use(express.json());
 // Pfad zur JSON-Datei
 const highscoreFile = path.join(__dirname, 'highscores.json');
 
-// API-Route zum Abrufen der Highscores
-/*app.get('/api/highscores', (req, res) => {
-    fs.readFile(highscoreFile, 'utf8', (err, data) => {
-        if (err) {
-            return res.status(500).json({ error: 'Error reading highscores' });
-        }
-        res.json(JSON.parse(data));
-    });
-});*/
-
 // API-Route zum Speichern von Highscores
 app.post('/save-highscore', (req, res) => {
     const { name, score } = req.body;

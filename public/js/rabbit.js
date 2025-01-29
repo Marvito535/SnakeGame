@@ -32,6 +32,12 @@ class Rabbit {
         );
     }
 
+    resize(boardWidth, boardHeight, blockSize) {
+        this.boardWidth = boardWidth;  // Neues Board-Breite
+        this.boardHeight = boardHeight;  // Neues Board-Höhe
+        this.blockSize = blockSize;  // Neue Blockgröße
+    }
+
 }
 
 export default Rabbit;
