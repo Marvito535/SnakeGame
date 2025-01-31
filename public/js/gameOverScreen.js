@@ -1,6 +1,6 @@
-class GameOverScreen {
+class GameOverScreen {                                                       //draw backscreen
     display(context, canvasWidth, canvasHeight, totalPoints) {
-        // Hintergrund zeichnen
+        // Hintergrund zeichnenS
         context.fillStyle = "black";
         context.fillRect(0, 0, canvasWidth, canvasHeight);
 

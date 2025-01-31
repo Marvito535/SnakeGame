@@ -10,7 +10,7 @@ class Rabbit {
         this.width = 3 * this.blockSize; // Set width to 3 blocks
     }
 
-    generatePosition() {
+    generatePosition() {         //fixed position
         const x = this.boardWidth - this.blockSize *20; 
         const y = this.boardHeight - this.blockSize * 6; 
         return { x: x, y: y };
@@ -31,13 +31,6 @@ class Rabbit {
             snakePosition.y === this.position.y
         );
     }
-
-    resize(boardWidth, boardHeight, blockSize) {
-        this.boardWidth = boardWidth;  // Neues Board-Breite
-        this.boardHeight = boardHeight;  // Neues Board-Höhe
-        this.blockSize = blockSize;  // Neue Blockgröße
-    }
-
 }
 
 export default Rabbit;

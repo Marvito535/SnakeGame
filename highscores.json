@@ -5,6 +5,14 @@
   },
   {
     "name": "Hello",
+    "score": 330
+  },
+  {
+    "name": "Marvin",
+    "score": 290
+  },
+  {
+    "name": "Hello",
     "score": 200
   },
   {
@@ -21,7 +29,15 @@
   },
   {
     "name": "Marvin",
+    "score": 140
+  },
+  {
+    "name": "Marvin",
     "score": 120
+  },
+  {
+    "name": "Hello",
+    "score": 100
   },
   {
     "name": "Hello",
@@ -81,6 +97,10 @@
   },
   {
     "name": "Hey",
+    "score": 20
+  },
+  {
+    "name": "Mariv",
     "score": 20
   },
   {
@@ -165,6 +185,10 @@
   },
   {
     "name": "wrrfea",
+    "score": 10
+  },
+  {
+    "name": "jsrgoijs",
     "score": 10
   }
 ]

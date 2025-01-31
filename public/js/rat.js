@@ -11,7 +11,7 @@ class Rat {
     }
 
     generatePosition() {
-        // Feste Position im oberen rechten Bereich
+        // Fixed position in the top right area
         const x = this.boardWidth - this.blockSize *5; 
         const y = this.boardHeight - this.blockSize * 9; 
         return { x: x, y: y };
@@ -31,12 +31,6 @@ class Rat {
             snakePosition.y < this.position.y + this.height &&
             snakePosition.x === this.position.x
         );
-    }
-    
-    resize(boardWidth, boardHeight, blockSize) {
-        this.boardWidth = boardWidth;  // Neues Board-Breite
-        this.boardHeight = boardHeight;  // Neues Board-Höhe
-        this.blockSize = blockSize;  // Neue Blockgröße
     }
 }
 

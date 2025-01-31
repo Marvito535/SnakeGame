@@ -8,15 +8,15 @@ class Border {
     }
 
     draw(ctx) {
-        const borderWidth = this.blockSize * 6; // Randbreite
-        const borderHeight = this.blockSize; // Randhöhe
+        const borderWidth = this.blockSize * 6; // Edge width
+        const borderHeight = this.blockSize; // Edge height
 
-        // Obere Kante
+        // Top edge
         for (let x = 0; x < this.canvas.width; x += borderWidth) {
             ctx.drawImage(this.borderImage, x, 0, borderWidth, borderHeight);
         }
 
-        // Untere Kante
+        // lower edge
         for (let x = 0; x < this.canvas.width; x += borderWidth) {
             ctx.drawImage(this.borderImage, x, this.canvas.height - borderHeight, borderWidth, borderHeight);
         }
@@ -25,27 +25,21 @@ class Border {
     isColliding(snakePosition) {
         const hedgeHeight = this.blockSize;
 
-        // Überprüfe Wandkollision (inklusive Hecke)
+        // Check wall collision (including hedge)
         if (
-            snakePosition.y < hedgeHeight || // Obere Hecke
-            snakePosition.y >= this.boardHeight - hedgeHeight // Untere Hecke
+            snakePosition.y < hedgeHeight || // top hedge
+            snakePosition.y >= this.boardHeight - hedgeHeight // Lower hedge
         ) {
             return true; // Kollision mit der Grenze
         }
 
-        // Wrap-Around für die linke und rechte Seite
+        // Wrap-around for the left and right sides
         if (snakePosition.x < 0) {
-            snakePosition.x = this.boardWidth - this.blockSize; // Links raus -> Rechts wieder rein
+            snakePosition.x = this.boardWidth - this.blockSize; //Out on the left -> back in on the right
          } 
          else if (snakePosition.x >= this.boardWidth) {
-         snakePosition.x = 0; // Rechts raus -> Links wieder rein
+         snakePosition.x = 0; // Out on the right -> back in to the left
      }
-    }
-    
-    resize(boardWidth, boardHeight, blockSize) {
-        this.boardWidth = boardWidth;  // Neues Board-Breite
-        this.boardHeight = boardHeight;  // Neues Board-Höhe
-        this.blockSize = blockSize;  // Neue Blockgröße
     }
 }
 export default Border;
