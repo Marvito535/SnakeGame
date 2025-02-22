@@ -3,34 +3,44 @@ class Rabbit {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         this.blockSize = blockSize;
-        this.position = this.generatePosition();
         this.rabbitImage = rabbitImage;
         this.rabbitImageTwo = rabbitImageTwo;
         this.rabbitImageThree = rabbitImageThree;
         this.width = 3 * this.blockSize; // Set width to 3 blocks
+        this.height = this.blockSize;   // Set height to 1 block
+        this.position = this.generatePosition();
     }
 
-    generatePosition() {         //fixed position
-        const x = this.boardWidth - this.blockSize *20; 
-        const y = this.boardHeight - this.blockSize * 6; 
-        return { x: x, y: y };
+    generatePosition() {   
+        // Ensure the rabbit doesn't extend beyond the canvas
+        const x = Math.min(this.boardWidth - this.width, this.boardWidth * 0.2);
+        const y = Math.min(this.boardHeight - this.height, this.boardHeight * 0.5);
+        return { x, y };
     }
 
     drawRabbit(ctx) {
-        
-            ctx.drawImage(this.rabbitImage, this.position.x, this.position.y, this.blockSize, this.blockSize);
-            ctx.drawImage(this.rabbitImageTwo, this.position.x + 1 * this.blockSize, this.position.y, this.blockSize, this.blockSize);
-            ctx.drawImage(this.rabbitImageThree, this.position.x + 2 * this.blockSize, this.position.y, this.blockSize, this.blockSize);
-        }
+        ctx.drawImage(this.rabbitImage, this.position.x, this.position.y, this.blockSize, this.blockSize);
+        ctx.drawImage(this.rabbitImageTwo, this.position.x + this.blockSize, this.position.y, this.blockSize, this.blockSize);
+        ctx.drawImage(this.rabbitImageThree, this.position.x + 2 * this.blockSize, this.position.y, this.blockSize, this.blockSize);
+    }
 
     isColliding(snakePosition) {
-        // Check if snake's head collides with any part of the obstacle
+        // Collision detection for all three blocks of the rabbit
         return (
-            snakePosition.x >= this.position.x &&
-            snakePosition.x < this.position.x + this.width &&
-            snakePosition.y === this.position.y
+            // Collision check for the first block (left block)
+            (snakePosition.x >= this.position.x && snakePosition.x < this.position.x + this.blockSize &&
+             snakePosition.y >= this.position.y && snakePosition.y < this.position.y + this.height) || 
+            
+            // Collision check for the second block (middle block)
+            (snakePosition.x >= this.position.x + this.blockSize && snakePosition.x < this.position.x + 2 * this.blockSize &&
+             snakePosition.y >= this.position.y && snakePosition.y < this.position.y + this.height) || 
+            
+            // Collision check for the third block (right block)
+            (snakePosition.x >= this.position.x + 2 * this.blockSize && snakePosition.x < this.position.x + 3 * this.blockSize &&
+             snakePosition.y >= this.position.y && snakePosition.y < this.position.y + this.height)
         );
     }
+    
 }
 
 export default Rabbit;

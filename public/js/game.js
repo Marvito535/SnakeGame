@@ -119,9 +119,9 @@ function onImagesLoaded() { // This function will only be executed if all 20 ima
                       dachshundHeadUp, dachshundRearUp,
                       dachshundHeadDown, dachshundRearDown,
                       dachshundBody, angle, dachshundMouthOpen, border);
-    food = new Food(boardWidth, boardHeight, blockSize, strawberryImage );
-    rabbit = new Rabbit(boardWidth, boardHeight, blockSize, rabbitImage, rabbitImageTwo, rabbitImageThree);
-    rat = new Rat(boardWidth, boardHeight, blockSize, ratImage, ratImageTwo, ratImageThree);
+    food = new Food(boardWidth, boardHeight, blockSize, strawberryImage, rat, rabbit );
+    rabbit = new Rabbit(boardWidth, boardHeight, blockSize, rabbitImage, rabbitImageTwo, rabbitImageThree, rabbit);
+    rat = new Rat(boardWidth, boardHeight, blockSize, ratImage, ratImageTwo, ratImageThree, rat);
     gameOverScreen = new GameOverScreen();
     startScreen = new StartScreen();
     
@@ -195,10 +195,9 @@ let lastFrameTime = 0; //This determines whether enough time has passed since th
 
 backgroundMusic.loop = true; // repeat the music
 backgroundMusic.volume = 1; // volume
-backgroundMusic.play(); // start music
 
 function gameLoop(timestamp) { 
-  
+
     if (!isGameStarted) {       //condition true here first time
         startScreen.display(ctx, canvas.width, canvas.height);    // Show the start screen before the game starts
         return; // Wait for the player to start the game
@@ -225,7 +224,6 @@ function gameLoop(timestamp) {
         }
         return;
     }
-    
 
     if (timestamp - lastFrameTime > frameInterval) { //calculation of speed
         lastFrameTime = timestamp;

@@ -1,12 +1,14 @@
 class Food {
-    constructor(boardWidth, boardHeight, blockSize, strawberryImage, pointsPerFood = 10, border) {
+    constructor(boardWidth, boardHeight, blockSize, strawberryImage, pointsPerFood = 10, border, rat, rabbit) {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         this.blockSize = blockSize;
         this.strawberryImage = strawberryImage;
         this.pointsPerFood = pointsPerFood;
         this.totalPoints = 0;
-        this.border = border; 
+        this.border = border;
+        this.rat = rat;  // An instance of the Rat class is expected here
+        this.rabbit = rabbit;  // An instance of the Rabbit class is expected here
         this.position = this.generatePosition();
     }
 
@@ -22,21 +24,23 @@ class Food {
 
     isCollidingWithObstacle(position) {
         const hedgeHeight = this.blockSize;
-        const a = this.boardWidth - this.blockSize *20; 
-        const b = this.boardHeight - this.blockSize * 6; 
-        const c = this.boardWidth - this.blockSize *5; 
-        const d = this.boardHeight - this.blockSize * 9; 
-
-        return position.y < hedgeHeight 
-        || position.y >= this.boardHeight - hedgeHeight
-
-        ||position.x === a || position.y === b 
-        || position.x === a +1 || position.y === b
-        || position.x === a+2 || position.y === b
-
-        || position.x === c || position.y === d
-        || position.x === c || position.y === d +1
-        || position.x === c || position.y === d +2;
+        
+        // Check if the food collides with the edges
+        if (position.y < hedgeHeight || position.y >= this.boardHeight - hedgeHeight) {
+            return true;
+        }
+    
+        // Check if the food collides with the rat, if rat exists
+        if (this.rat && this.rat.isColliding(position)) {
+            return true;
+        }
+    
+        // Check if the food collides with the rabbit, if rabbit exists
+        if (this.rabbit && this.rabbit.isColliding(position)) {
+            return true;
+        }
+    
+        return false;
     }
 
     drawFood(ctx) {

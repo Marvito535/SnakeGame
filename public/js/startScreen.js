@@ -6,22 +6,22 @@ class StartScreen {
 
         // Title Text
         context.fillStyle = "green";
-        context.font = "48px Arial";
+        context.font = `${Math.floor(canvasHeight * 0.07)}px Arial`; // Adjust font size based on canvas height
         context.textAlign = "center";
-        context.fillText("Welcome to the Game!", canvasWidth / 2, canvasHeight / 2 - 50);
+        context.fillText("Welcome to the Game!", canvasWidth / 2, canvasHeight / 2 - canvasHeight * 0.1);
 
         // Instructions
         context.fillStyle = "white";
-        context.font = "24px Arial";
+        context.font = `${Math.floor(canvasHeight * 0.05)}px Arial`; // Adjust font size based on canvas height
         context.fillText("Press 'Space' to Start", canvasWidth / 2, canvasHeight / 2);
 
-        // Other instructions or credits
-        context.font = "18px Arial";
-        context.fillText("Use Arrow keys to control", canvasWidth / 2, canvasHeight / 2 + 50);
+        // Other instructions 
+        context.font = `${Math.floor(canvasHeight * 0.04)}px Arial`; // Adjust font size based on canvas height
+        context.fillText("Use Arrow keys to control", canvasWidth / 2, canvasHeight / 2 + canvasHeight * 0.1);
 
-         // Other instructions or credits
-         context.font = "18px Arial";
-         context.fillText("'Click' for music", canvasWidth / 2, canvasHeight / 2 + 100);
+        // Music instruction
+        context.font = `${Math.floor(canvasHeight * 0.04)}px Arial`; // Adjust font size based on canvas height
+        context.fillText("'Click' for music", canvasWidth / 2, canvasHeight / 2 + canvasHeight * 0.2);
     }
 }
 

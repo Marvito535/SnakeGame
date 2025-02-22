@@ -46,3 +46,18 @@ display: none;
 #highscore-list li {
     margin: 5px 0;
 }
+
+#fullscreenButton {
+    position: fixed; /* Fixiert den Button auf dem Bildschirm */
+    top: 50%; /* Zentriert den Button vertikal */
+    left: 50%; /* Zentriert den Button horizontal */
+    transform: translate(-50%, -50%); /* Verschiebt den Button exakt in die Mitte */
+    font-size: 20px; /* Definiert die Schriftgröße */
+    padding: 15px 30px; /* Definiert die Button-Größe */
+    color: white; /* Weiße Schrift */
+    border: none;
+    border-radius: 5px; /* Abgerundete Ecken */
+    cursor: pointer;
+    z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
+}
+
