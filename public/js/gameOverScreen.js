@@ -1,6 +1,6 @@
 class GameOverScreen {                                                       //draw backscreen
     display(context, canvasWidth, canvasHeight, totalPoints) {
-        // Hintergrund zeichnenS
+        // draw backgorund
         context.fillStyle = "black";
         context.fillRect(0, 0, canvasWidth, canvasHeight);
 
@@ -10,7 +10,7 @@ class GameOverScreen {                                                       //d
         context.textAlign = "center";
         context.fillText("GAME OVER", canvasWidth / 2, canvasHeight / 2 - 50);
 
-        // Punktestand anzeigen
+        // display points
         context.fillStyle = "white";
         context.font = "24px Arial";
         context.fillText(`Your Score: ${totalPoints}`, canvasWidth / 2, canvasHeight / 2);

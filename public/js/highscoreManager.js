@@ -6,7 +6,7 @@ class HighscoreManager {
         this.highscoreScreen = new HighscoreScreen(); 
     }
 
-    // Methode zum Speichern eines neuen Highscores
+    // Method to save a new hoghscore
     saveHighscore(name, score) {
         fetch(`${this.apiUrl}/save-highscore`, {
             method: 'POST',
@@ -18,7 +18,7 @@ class HighscoreManager {
             .then(response => response.json())
             .then(data => {
                 if (data.highscores) {
-                    this.highscoreScreen.displayHighscores(data.highscores); // Nutze die Instanz
+                    this.highscoreScreen.displayHighscores(data.highscores); // use the instance
                 } else {
                     console.error('Fehler: Highscore konnte nicht gespeichert werden');
                 }
