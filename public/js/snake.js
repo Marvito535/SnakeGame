@@ -85,16 +85,16 @@ class Snake {
     }
     
     isColliding() {
-        const head = this.segments[0]; // Kopf der Schlange
+        const head = this.segments[0]; // Hed of the dog
     
-        // Überprüfe Selbstkollision
+        // proof self-collision
         for (let i = 1; i < this.segments.length; i++) {
             if (this.segments[i].x === head.x && this.segments[i].y === head.y) {
                 return true;
             }
         }
 
-        return false; // Keine Kollision
+        return false; // no collision
     }
 
     grow() {  

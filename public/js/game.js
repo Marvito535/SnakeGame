@@ -120,8 +120,8 @@ function onImagesLoaded() { // This function will only be executed if all 20 ima
                       dachshundHeadDown, dachshundRearDown,
                       dachshundBody, angle, dachshundMouthOpen, border);
     food = new Food(boardWidth, boardHeight, blockSize, strawberryImage, rat, rabbit );
-    rabbit = new Rabbit(boardWidth, boardHeight, blockSize, rabbitImage, rabbitImageTwo, rabbitImageThree, rabbit);
-    rat = new Rat(boardWidth, boardHeight, blockSize, ratImage, ratImageTwo, ratImageThree, rat);
+    rabbit = new Rabbit(boardWidth, boardHeight, blockSize, rabbitImage, rabbitImageTwo, rabbitImageThree);
+    rat = new Rat(boardWidth, boardHeight, blockSize, ratImage, ratImageTwo, ratImageThree);
     gameOverScreen = new GameOverScreen();
     startScreen = new StartScreen();
     
@@ -131,8 +131,10 @@ function onImagesLoaded() { // This function will only be executed if all 20 ima
 }
 
 function checkAllImagesLoaded() {
+    console.log(`Images loaded: ${imagesLoaded} from ${totalImages}`);
     imagesLoaded++;  // increases images by 1
     if (imagesLoaded === totalImages) { //The function onImagesLoaded only executes when all 20 images have been loaded
+        console.log('All images loades!');
         onImagesLoaded(); 
     }
 }
@@ -189,8 +191,9 @@ function drawScore() {
     ctx.fillText(scoreText, blockSize, blockSize / 1.5); //Draw points at the top left
 }
 
-const frameRate = 5 // Number of movements per second
-const frameInterval = 1000 / frameRate; //This calculates the time interval between two consecutive frames in milliseconds.
+const targetFPS = 60; // target FPS
+const interval = 20000 / targetFPS; // mileseconds per  Frame
+
 let lastFrameTime = 0; //This determines whether enough time has passed since the last frame to render the next frame.
 
 backgroundMusic.loop = true; // repeat the music
@@ -200,12 +203,16 @@ function gameLoop(timestamp) {
 
     if (!isGameStarted) {       //condition true here first time
         startScreen.display(ctx, canvas.width, canvas.height);    // Show the start screen before the game starts
+        console.log(`Game started before Keydown: ${isGameStarted}`);
         return; // Wait for the player to start the game
     }
 
     if (isPaused) { //condition false without trigger
         return; // Wait for the player to continue the game
     }
+
+      /*  console.log(`Game continued: ${!isPaused}`);*/
+
     if (isGameOver) { //condition false without trigger
         if (!gameOverScreen.shown) {
             gameOverScreen.shown = true;
@@ -225,8 +232,9 @@ function gameLoop(timestamp) {
         return;
     }
 
-    if (timestamp - lastFrameTime > frameInterval) { //calculation of speed
+    if (timestamp - lastFrameTime >= interval) {
         lastFrameTime = timestamp;
+
 
         drawBackground();                              //draw background first
         if (food.isEaten(snake.segments[0])) {         //execute methods from other classes
@@ -239,6 +247,9 @@ function gameLoop(timestamp) {
             }, 250);
         }
 
+        const initialPosition = snake.segments[0];
+        console.log(`Initial position of the dog: X=${initialPosition.x}, Y=${initialPosition.y}`);
+
         snake.move();                             //more methods
         snake.isColliding();
         border.draw(ctx);
@@ -248,13 +259,32 @@ function gameLoop(timestamp) {
         rat.drawRat(ctx);
         food.drawFood(ctx);
 
+        const newPosition = snake.segments[0];
+        console.log(`New position after movement: X=${newPosition.x}, Y=${newPosition.y}`);
+
         // check collision
         if (rabbit.isColliding(snake.segments[0]) || rat.isColliding(snake.segments[0]) || border.isColliding(snake.segments[0]) || snake.isColliding(snake.segments[0]))
              {
             isGameOver = true; // set status
         }
     }
-
+    
+    /*function testCollision() {
+        const snakeHead = snake.segments[0];  // Schlangenkopf
+        const collidesWithBorder = border.isColliding(snakeHead);
+        const collidesWithRabbit = rabbit.isColliding(snakeHead);
+        const collidesWithRat = rat.isColliding(snakeHead);
+    
+        console.log(`Collsion with wall: ${collidesWithBorder}`);
+        console.log(`collision with rabbit: ${collidesWithRabbit}`);
+        console.log(`Collsion with rat: ${collidesWithRat}`);
+    
+        if (collidesWithBorder || collidesWithRabbit || collidesWithRat) {
+            isGameOver = true;
+            console.log('The game is over! Collsion detected.');
+        }
+    }
+    testCollision(); */
   requestAnimationFrame(gameLoop); //restart loop
 }
 
@@ -270,6 +300,8 @@ function initializeEventListeners() {               //bundle Keylisteners
                 requestAnimationFrame(gameLoop);
             }
         }
+         console.log(`Game started after Keydown: ${isGameStarted}`);
+         console.log(`Game is paused: ${isPaused}`);
     });
 
     document.addEventListener('click', () => {     //click for play music
@@ -278,10 +310,14 @@ function initializeEventListeners() {               //bundle Keylisteners
         });
     });
 
+    console.log(`Canvas Size before Resize: ${canvas.width}x${canvas.height}`);
     window.addEventListener('resize', () => { // Game is over when resize
         resizeCanvas()
+        console.log(`Canvas Size after Resize: ${canvas.width}x${canvas.height}`);
         isGameOver = true; 
     });
 }
 initializeEventListeners();
+
+
 

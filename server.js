@@ -5,22 +5,22 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
-// Middleware, um statische Dateien zu bedienen (z.B. HTML, JS, CSS)
+// Middleware to serve static files (e.g. HTML, JS, CSS)
 app.use(express.static('public'));
 app.use(express.json());
 
-// Pfad zur JSON-Datei
+// Path to JSON file
 const highscoreFile = path.join(__dirname, 'highscores.json');
 
-// API-Route zum Speichern von Highscores
-app.post('/save-highscore', (req, res) => {
+// API route for storing high scores
+   app.post('/save-highscore', (req, res) => {
     const { name, score } = req.body;
 
     if (!name || !score) {
         return res.status(400).json({ error: 'Name and score are required' });
     }
 
-    // Lese die aktuellen Highscores
+    // Read the current high scores
     fs.readFile(highscoreFile, 'utf8', (err, data) => {
         if (err) {
             return res.status(500).json({ error: 'Error reading highscores' });
@@ -28,25 +28,25 @@ app.post('/save-highscore', (req, res) => {
 
         const highscores = JSON.parse(data);
 
-        // Füge den neuen Highscore hinzu
+        // Add the new high score
         highscores.push({ name, score });
 
-        // Sortiere die Highscores absteigend nach Score
+        // Sort the high scores in descending order by score
         highscores.sort((a, b) => b.score - a.score);
 
-        // Speichere die aktualisierten Highscores zurück in die Datei
+        // Save the updated high scores back to the file
         fs.writeFile(highscoreFile, JSON.stringify(highscores, null, 2), 'utf8', (err) => {
             if (err) {
                 return res.status(500).json({ error: 'Error saving highscores' });
             }
 
-            // Antwort mit den aktuellen Highscores
+            // Answer with the current high scores
             res.json({ message: 'Highscore saved', highscores });
         });
     });
 });
 
-// Server starten
+// Start server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
