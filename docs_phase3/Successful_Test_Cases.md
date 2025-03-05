@@ -1,7 +1,7 @@
 # Successful Test Cases
 
 ## Test Case 1: Image Loading
-**Description:** Check if all images are loaded correctly.
+**Description: Check if all images are loaded correctly.
 
 **Expected Result:**
 - All 20 images should be loaded without errors.
@@ -20,8 +20,8 @@ game.js:137 All images loaded!
 
 ---
 
-##Test Case 2: Collision Detection
-**Description:** Check if a collision with the wall or other objects is correctly detected.
+## Test Case 2: Collision Detection
+**Description: Check if a collision with the wall or other objects is correctly detected.
 
 **Expected Result:**
 - The game should detect a collision with the wall or an object and end the game.
@@ -38,11 +38,9 @@ game.js:272 The game is over! Collision detected.
 
 ```
 ✅ Test passed: The collision with the object was detected and the game ended correctly.
-
 ```
-
 ## Test Case 3: Snake Movement
-**Description:** Check if the snake moves in the correct direction without errors or unexpected positions.
+**Description: Check if the snake moves in the correct direction without errors or unexpected positions.
 
 **Expected Result:**
 - The snake should move correctly in the specified direction.
@@ -70,7 +68,7 @@ game.js:259 New position after movement: X=938, Y=335
 ```
 
 ## Test Case 4: Pausing and Resuming the Game
-**Description:** Check if the game pauses and resumes correctly.
+**Description: Check if the game pauses and resumes correctly.
 
 **Expected Result:**
 - The game should pause correctly when stopped, and resume when the player resumes it.
@@ -94,7 +92,7 @@ food.js:47 Drawing food at (603, 469) with size 67
 ---
 
 ## Test Case 5: Check if the Game Starts When the Spacebar is Pressed  
-**Description:** Check if the game starts correctly when the spacebar is pressed. 
+**Description: Check if the game starts correctly when the spacebar is pressed. 
 
 **Expected Result:**  
 -- The game should start when the spacebar is pressed. 
@@ -108,7 +106,7 @@ game.js:303 Game started after Keydown: true
 
 ---
 ## Test Case 6: Check Canvas Size After Window Resize
-**Description:** Check if the canvas is correctly resized when the window size changes.
+**Description: Check if the canvas is correctly resized when the window size changes.
 
 **Expected Result:**  
 - The canvas should be correctly adjusted to the new window size.
