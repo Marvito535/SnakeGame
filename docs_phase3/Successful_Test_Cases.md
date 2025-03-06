@@ -66,7 +66,10 @@ game.js:259 New position after movement: X=938, Y=335
 ✅ Test passed: The snake moves correctly in the specified direction.
 
 ```
+<<<<<<< HEAD
 
+=======
+>>>>>>> 115f199 (Initial commit after fixing get issue)
 ## Test Case 4: Pausing and Resuming the Game
 **Description:** Check if the game pauses and resumes correctly.
 
@@ -90,7 +93,10 @@ food.js:47 Drawing food at (603, 469) with size 67
 ✅ Test passed: The game was correctly paused and resumed.
 
 ---
+<<<<<<< HEAD
 
+=======
+>>>>>>> 115f199 (Initial commit after fixing get issue)
 ## Test Case 5: Check if the Game Starts When the Spacebar is Pressed  
 **Description:** Check if the game starts correctly when the spacebar is pressed. 
 

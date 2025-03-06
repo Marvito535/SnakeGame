@@ -6,11 +6,21 @@ const app = express();
 const port = 3000;
 
 // Middleware to serve static files (e.g. HTML, JS, CSS)
+<<<<<<< HEAD
 app.use(express.static('public'));
 app.use(express.json());
 
 // Path to JSON file
 const highscoreFile = path.join(__dirname, 'highscores.json');
+=======
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html')); // Hier wird die index.html Datei geladen
+});
+
+>>>>>>> 115f199 (Initial commit after fixing get issue)
 
 // API route for storing high scores
    app.post('/save-highscore', (req, res) => {
@@ -19,6 +29,12 @@ const highscoreFile = path.join(__dirname, 'highscores.json');
     if (!name || !score) {
         return res.status(400).json({ error: 'Name and score are required' });
     }
+<<<<<<< HEAD
+=======
+ 
+    // Path to JSON file
+    const highscoreFile = path.join(__dirname, 'highscores.json');
+>>>>>>> 115f199 (Initial commit after fixing get issue)
 
     // Read the current high scores
     fs.readFile(highscoreFile, 'utf8', (err, data) => {
