@@ -2,23 +2,23 @@ const { exec } = require('child_process');
 const { platform } = require('os');
 const path = require('path');
 
-// Server starten
+// start server
 const serverProcess = exec('node ' + path.join(__dirname, '..', 'server.js'));
 
-// Server-Fehler anzeigen
+// show issues
 serverProcess.stderr.on('data', (data) => {
     console.error(`Server Error: ${data}`);
 });
 
-// Erfolgreich gestarteter Server
+// server successfully started
 serverProcess.stdout.on('data', (data) => {
     console.log(`Server: ${data}`);
 });
 
-// Verzögerung (in Millisekunden)
+// delay
 const delay = 3000; // 3 Sekunden Verzögerung für den Browser-Start
 
-// Warte mit setTimeout, bevor der Browser geöffnet wird
+// wait with setTimeout before open the browser
 setTimeout(() => {
     if (platform() === 'win32') {
         exec('start http://localhost:3000');  // Windows
@@ -29,7 +29,7 @@ setTimeout(() => {
     }
 }, delay);
 
-// Beende den Server, wenn der Prozess gestoppt wird
+// stop  the server when the process is stopped
 process.on('exit', () => {
     serverProcess.kill();
 });
