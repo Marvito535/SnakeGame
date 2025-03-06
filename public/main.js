@@ -16,7 +16,7 @@ serverProcess.stdout.on('data', (data) => {
 });
 
 // delay
-const delay = 3000; // 3 Sekunden Verzögerung für den Browser-Start
+const delay = 3000; // 3 seconds delay here
 
 // wait with setTimeout before open the browser
 setTimeout(() => {
@@ -29,7 +29,7 @@ setTimeout(() => {
     }
 }, delay);
 
-// stop  the server when the process is stopped
+// stop the server when the process is stopped
 process.on('exit', () => {
     serverProcess.kill();
 });
