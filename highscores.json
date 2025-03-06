@@ -1,64 +1,5 @@
 [
   {
-<<<<<<< HEAD
-    "name": "MArvin",
-    "score": 380
-  },
-  {
-    "name": "Hello",
-    "score": 330
-  },
-  {
-    "name": "Marvin",
-    "score": 290
-  },
-  {
-    "name": "Hello",
-    "score": 200
-  },
-  {
-    "name": "hosahgosarg",
-    "score": 200
-  },
-  {
-    "name": "hello",
-    "score": 150
-  },
-  {
-    "name": "fdd",
-    "score": 140
-  },
-  {
-    "name": "Marvin",
-    "score": 140
-  },
-  {
-    "name": "waf ",
-    "score": 130
-  },
-  {
-    "name": "Marvin",
-    "score": 120
-  },
-  {
-    "name": "Test123",
-    "score": 120
-  },
-  {
-    "name": "Hello",
-    "score": 100
-  },
-  {
-    "name": "Hello",
-    "score": 100
-  },
-  {
-    "name": "wef",
-    "score": 90
-  },
-  {
-=======
->>>>>>> 115f199 (Initial commit after fixing get issue)
     "name": "efsef",
     "score": 80
   },
@@ -83,13 +24,10 @@
     "score": 60
   },
   {
-<<<<<<< HEAD
-=======
     "name": "sgsefsegse",
     "score": 60
   },
   {
->>>>>>> 115f199 (Initial commit after fixing get issue)
     "name": "lese",
     "score": 50
   },
@@ -238,13 +176,10 @@
     "score": 20
   },
   {
-<<<<<<< HEAD
-=======
     "name": "sgsrg",
     "score": 20
   },
   {
->>>>>>> 115f199 (Initial commit after fixing get issue)
     "name": "ewgsre",
     "score": 10
   },
@@ -419,12 +354,9 @@
   {
     "name": "aee",
     "score": 10
-<<<<<<< HEAD
-=======
   },
   {
     "name": "seg",
     "score": 10
->>>>>>> 115f199 (Initial commit after fixing get issue)
   }
 ]
