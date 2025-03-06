@@ -6,7 +6,7 @@ Follow these steps to install and run the Snake Game on your Windows system:
 
 ## 1. Download the Code
 **Go to the GitHub repository: Snake Game**
-- Click on <Code> and select Download ZIP
+- Click on < Code >" and select Download ZIP
 - Extract the downloaded ZIP file to a folder of your choice
 
 ## 2. Install Node.js
