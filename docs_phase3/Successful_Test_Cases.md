@@ -7,6 +7,7 @@
 - All 20 images should be loaded without errors.
 
 **Result:**
+
 Images loaded: 0 from 20
 game.js:134 Images loaded: 1 from 20
 game.js:134 Images loaded: 2 from 20
@@ -22,6 +23,7 @@ game.js:137 All images loaded!
 - The game should detect a collision with the wall or an object and end the game.
 
 **Result:**
+
 Current direction head: RIGHT
 snake.js:84 Current direction body: UP
 food.js:47 Drawing food at (134, 469) with size 67
@@ -39,6 +41,7 @@ game.js:272 The game is over! Collision detected.
 - The snake should move correctly in the specified direction.
 
 **Result:**
+
 snake.js:75 Current direction head: RIGHT
 snake.js:84 Current direction body: RIGHT
 food.js:47 Drawing food at (1273, 268) with size 67
@@ -63,6 +66,7 @@ game.js:259 New position after movement: X=938, Y=335
 - The game should pause correctly when stopped, and resume when the player resumes it.
 
 **Result:**
+
 Current direction body: RIGHT
 food.js:47 Drawing food at (603, 469) with size 67
 game.js:265 New position after movement: X=670, Y=335
@@ -84,6 +88,7 @@ food.js:47 Drawing food at (603, 469) with size 67
 - The game should start when the spacebar is pressed. 
 
 **Result:**  
+
 game.js:303 Game started before Keydown: false
 game.js:303 Game started after Keydown: true
 
@@ -96,6 +101,7 @@ game.js:303 Game started after Keydown: true
 - The canvas should be correctly adjusted to the new window size.
 
 **Result:**
+
 game.js:316 Canvas Size after Resize: 230x598
 game.js:316 Canvas Size after Resize: 240x576
 game.js:316 Canvas Size after Resize: 264x576
