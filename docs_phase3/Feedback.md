@@ -19,9 +19,6 @@ c# Feedback Document for Project
 2. **Gimp**:
    - Gimp was removed from the technology choices as it is not a technology.
 
-3. **Test Cases and Data**:
-   - I have not yet provided the test cases and data but will address this later.
-
 4. **Installation Instructions**
    - I added the installation instructions to the README file.
 
