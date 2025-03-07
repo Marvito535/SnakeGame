@@ -22,9 +22,16 @@ c# Feedback Document for Project
 3. **Test Cases and Data**:
    - I have not yet provided the test cases and data but will address this later.
 
-## Additional Information
+4. **Installation Instructions**
+   - I added the installation instructions to the README file.
 
-- **Responsive Design**: The main classes/modules of the Snake game were rewritten to make it responsive, adapting to the window size with the canvas.
-- **Missing Code on GitHub**: I understand that my code was not uploaded to GitHub, and I will address this shortly.
-- **Installation Instructions**: I will add the installation instructions to the README file in the coming days.
+5. **Test Cases**
+   - Test cases were added to docs_phase3
+
+6. **Visibility of the code in GitHub**
+   - The Master branch has been set as default in the repository. The code should appear immediately
+
+7. **Responsive Design**
+   - The main classes/modules of the Snake game were rewritten to make it responsive, adapting to the window size with the canvas.
+
 
