@@ -10,7 +10,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html')); // Hier wird die index.html Datei geladen
+    res.sendFile(path.join(__dirname, 'public', 'index.html')); // Here index.html is loaded
 });
 
 

@@ -128,7 +128,7 @@ class Snake {
         this.ctx.restore(); // Restore the previous context state
     }
     
-    drawSnake(isEating) {
+    drawSnake(isEatingAnimation) {
         const segmentSize = this.blockSize;
     
         // Draw head
@@ -138,9 +138,9 @@ class Snake {
         let flipHorizontally = false;
         let headRotation = 0;
 
-        if (isEating && head.direction === 'LEFT') {
+        if (isEatingAnimation && head.direction === 'LEFT') {
             headImage = this.dachshundMouthOpen;
-        } else if (isEating && head.direction === 'RIGHT') {
+        } else if (isEatingAnimation && head.direction === 'RIGHT') {
             headImage = this.dachshundMouthOpen;
             flipHorizontally = true;
         } else {

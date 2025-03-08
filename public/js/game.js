@@ -16,7 +16,7 @@ let boardWidth, boardHeight, blockSize, snake, border, food, rabbit, rat, gameOv
 let imagesLoaded = 0; //declare variable and assign value
 const totalImages = 20; //declare constant variable and assign value
 
-let isEating = false; // Boolean to check if the dog eats food (for mouth animation)
+let isEatingAnimation = false; // Boolean to check if the dog eats food (for mouth animation)
 let isGameStarted = false; // Boolean to check if the game has started
 let isGameOver = false; // Boolean for Game Over
 let isPaused = false; // Boolean to check if the game is paused
@@ -110,21 +110,19 @@ const backgroundMusic = new Audio('./assets/sounds/soft-guitar.mp3');
 
 function onImagesLoaded() { // This function will only be executed if all 20 images are loaded
     resizeCanvas(); // executes function 
-
     // create constructors to initialize starting values for ojects 
+    rabbit = new Rabbit(boardWidth, boardHeight, blockSize, rabbitImage, rabbitImageTwo, rabbitImageThree);
+    rat = new Rat(boardWidth, boardHeight, blockSize, ratImage, ratImageTwo, ratImageThree);
     border = new Border(canvas, blockSize, borderImage, boardWidth, boardHeight);
+    food = new Food(boardWidth, boardHeight, blockSize, strawberryImage, rat, rabbit );
     snake = new Snake(boardWidth, boardHeight, blockSize, ctx, 
                       dachshundHeadLeft, dachshundRearLeft,
                       dachshundHeadRight, dachshundRearRight,
                       dachshundHeadUp, dachshundRearUp,
                       dachshundHeadDown, dachshundRearDown,
                       dachshundBody, angle, dachshundMouthOpen, border);
-    food = new Food(boardWidth, boardHeight, blockSize, strawberryImage, rat, rabbit );
-    rabbit = new Rabbit(boardWidth, boardHeight, blockSize, rabbitImage, rabbitImageTwo, rabbitImageThree);
-    rat = new Rat(boardWidth, boardHeight, blockSize, ratImage, ratImageTwo, ratImageThree);
     gameOverScreen = new GameOverScreen();
     startScreen = new StartScreen();
-    
 
     document.addEventListener('keydown', handleKeyDown); // keydown event is registered 
     requestAnimationFrame(gameLoop); // start the loop(frame update), is needed at this point to display the start screen
@@ -192,7 +190,7 @@ function drawScore() {
 }
 
 const targetFPS = 60; // target FPS
-const interval = 20000 / targetFPS; // mileseconds per  Frame
+const interval = 10000 / targetFPS; // mileseconds per  Frame
 
 let lastFrameTime = 0; //This determines whether enough time has passed since the last frame to render the next frame.
 
@@ -207,11 +205,11 @@ function gameLoop(timestamp) {
         return; // Wait for the player to start the game
     }
 
-    if (isPaused) { //condition false without trigger
+   /* if (isPaused) { //condition false without trigger
         return; // Wait for the player to continue the game
-    }
+    }*/
 
-      /*  console.log(`Game continued: ${!isPaused}`);*/
+      /*console.log(`Game continued: ${!isPaused}`);*/
 
     if (isGameOver) { //condition false without trigger
         if (!gameOverScreen.shown) {
@@ -235,40 +233,47 @@ function gameLoop(timestamp) {
     if (timestamp - lastFrameTime >= interval) {
         lastFrameTime = timestamp;
 
-
-        drawBackground();                              //draw background first
-        if (food.isEaten(snake.segments[0])) {         //execute methods from other classes
-            food.eatFood();
-            food.relocate();
-            snake.grow();
-            isEating = true;
-            setTimeout(() => {
-                isEating = false;
-            }, 250);
-        }
-
-        const initialPosition = snake.segments[0];
-        console.log(`Initial position of the dog: X=${initialPosition.x}, Y=${initialPosition.y}`);
-
-        snake.move();                             //more methods
-        snake.isColliding();
+        drawBackground();
         border.draw(ctx);
-        drawScore();                            //draw score
-        snake.drawSnake(isEating);
+        drawScore();
         rabbit.drawRabbit(ctx);
         rat.drawRat(ctx);
         food.drawFood(ctx);
+        
+        const initialPosition = snake.segments[0];
+        console.log(`Initial position of the dog: X=${initialPosition.x}, Y=${initialPosition.y}`);
+        
+        snake.move(); //  move snake first
+        snake.drawSnake(isEatingAnimation); // then draw
+        snake.isColliding();
+        
+        if (food.isEaten(snake.segments[0])) {
+            food.relocate();
+            isEatingAnimation = true;
+            setTimeout(() => {
+                isEatingAnimation = false;
+            }, 600);
+            food.eatFood();
+            snake.grow();
+        }  
+
+        // Collsion after movement
+        if (
+            rabbit.isColliding(snake.segments[0]) || 
+            rat.isColliding(snake.segments[0]) || 
+            border.isColliding(snake.segments[0]) || 
+            snake.isColliding(snake.segments[0])
+        ) {
+            isGameOver = true;
+        }
+   }
+   
+                       
 
         const newPosition = snake.segments[0];
         console.log(`New position after movement: X=${newPosition.x}, Y=${newPosition.y}`);
 
-        // check collision
-        if (rabbit.isColliding(snake.segments[0]) || rat.isColliding(snake.segments[0]) || border.isColliding(snake.segments[0]) || snake.isColliding(snake.segments[0]))
-             {
-            isGameOver = true; // set status
-        }
-    }
-    
+       
     /*function testCollision() {
         const snakeHead = snake.segments[0];  // Schlangenkopf
         const collidesWithBorder = border.isColliding(snakeHead);

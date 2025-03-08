@@ -6,15 +6,14 @@ class Rabbit {
         this.rabbitImage = rabbitImage;
         this.rabbitImageTwo = rabbitImageTwo;
         this.rabbitImageThree = rabbitImageThree;
-        this.width = 3 * this.blockSize; // Set width to 3 blocks
+        this.width =  this.blockSize; 
         this.height = this.blockSize;   // Set height to 1 block
         this.position = this.generatePosition();
     }
 
-    generatePosition() {   
-        // Ensure the rabbit doesn't extend beyond the canvas
-        const x = Math.min(this.boardWidth - this.width, this.boardWidth * 0.2);
-        const y = Math.min(this.boardHeight - this.height, this.boardHeight * 0.5);
+    generatePosition() {
+        const x = Math.floor(this.boardWidth * 0.2 / this.blockSize) * this.blockSize;
+        const y = Math.floor(this.boardHeight * 0.5 / this.blockSize) * this.blockSize;
         return { x, y };
     }
 
@@ -25,22 +24,18 @@ class Rabbit {
     }
 
     isColliding(snakePosition) {
-        // Collision detection for all three blocks of the rabbit
+        // Collsion detection for rabbits
         return (
-            // Collision check for the first block (left block)
-            (snakePosition.x >= this.position.x && snakePosition.x < this.position.x + this.blockSize &&
-             snakePosition.y >= this.position.y && snakePosition.y < this.position.y + this.height) || 
-            
-            // Collision check for the second block (middle block)
-            (snakePosition.x >= this.position.x + this.blockSize && snakePosition.x < this.position.x + 2 * this.blockSize &&
-             snakePosition.y >= this.position.y && snakePosition.y < this.position.y + this.height) || 
-            
-            // Collision check for the third block (right block)
-            (snakePosition.x >= this.position.x + 2 * this.blockSize && snakePosition.x < this.position.x + 3 * this.blockSize &&
-             snakePosition.y >= this.position.y && snakePosition.y < this.position.y + this.height)
+            snakePosition.x >= this.position.x && 
+            snakePosition.x < this.position.x + 3 * this.blockSize &&
+            snakePosition.y >= this.position.y && 
+            snakePosition.y < this.position.y + this.height
         );
+    }
+
+    getPosition() {
+        return this.position;
     }
     
 }
-
 export default Rabbit;
