@@ -10,8 +10,8 @@ class Food {
         this.pointsPerFood = pointsPerFood;
         this.totalPoints = 0;
         this.border = border;
-        this.ratInstance = new Rat(); 
-        this.rabbitInstance = new Rabbit();  
+        this.ratInstance = new Rat(boardWidth, boardHeight, blockSize); 
+        this.rabbitInstance = new Rabbit(boardWidth, boardHeight, blockSize);  
         this.position = this.generatePosition();
     }
 
@@ -80,4 +80,3 @@ class Food {
 }
 
 export default Food;
-

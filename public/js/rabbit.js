@@ -30,12 +30,12 @@ class Rabbit {
             snakePosition.x < this.position.x + 3 * this.blockSize &&
             snakePosition.y >= this.position.y && 
             snakePosition.y < this.position.y + this.height
-        );
+        )
     }
-
     getPosition() {
         return this.position;
     }
     
 }
+
 export default Rabbit;
