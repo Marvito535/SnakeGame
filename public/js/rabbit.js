@@ -32,6 +32,7 @@ class Rabbit {
             snakePosition.y < this.position.y + this.height
         )
     }
+    
     getPosition() {
         return this.position;
     }

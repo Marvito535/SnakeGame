@@ -30,7 +30,7 @@ class Rat {
             snakePosition.x < this.position.x + this.width &&
             snakePosition.y >= this.position.y && 
             snakePosition.y < this.position.y + 3 * this.blockSize
-        );
+        )
     }
 
     getPosition() {
