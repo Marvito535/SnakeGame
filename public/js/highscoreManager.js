@@ -6,7 +6,7 @@ class HighscoreManager {
         this.highscoreScreen = new HighscoreScreen(); 
     }
 
-    // Method to save a new hoghscore
+    // Method to save a new highscore
     saveHighscore(name, score) {
         fetch(`${this.apiUrl}/save-highscore`, {
             method: 'POST',

@@ -70,7 +70,7 @@ class Food {
 
     eatFood() {
         this.totalPoints += this.pointsPerFood;
-        console.log(`Food eaten! Total points: ${this.totalPoints}`);
+        /*console.log(`Food eaten! Total points: ${this.totalPoints}`);*/
     }
 
     relocate() {

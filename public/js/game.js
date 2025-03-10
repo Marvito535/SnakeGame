@@ -109,12 +109,12 @@ const highscoreScreen = new HighscoreScreen();
 const backgroundMusic = new Audio('./assets/sounds/soft-guitar.mp3');
 
 function onImagesLoaded() { // This function will only be executed if all 20 images are loaded
-    resizeCanvas(); // executes function 
+    resizeCanvas(); // executes function, assigns a value to boardWidth, boardHeight, blockSize
     // create constructors to initialize starting values for ojects 
     rabbit = new Rabbit(boardWidth, boardHeight, blockSize, rabbitImage, rabbitImageTwo, rabbitImageThree);
     rat = new Rat(boardWidth, boardHeight, blockSize, ratImage, ratImageTwo, ratImageThree);
     border = new Border(canvas, blockSize, borderImage, boardWidth, boardHeight);
-    food = new Food(boardWidth, boardHeight, blockSize, strawberryImage, rat, rabbit );
+    food = new Food(boardWidth, boardHeight, blockSize, strawberryImage);
     snake = new Snake(boardWidth, boardHeight, blockSize, ctx, 
                       dachshundHeadLeft, dachshundRearLeft,
                       dachshundHeadRight, dachshundRearRight,
@@ -189,8 +189,8 @@ function drawScore() {
     ctx.fillText(scoreText, blockSize, blockSize / 1.5); //Draw points at the top left
 }
 
-const targetFPS = 60; // target FPS
-const interval = 10000 / targetFPS; // mileseconds per  Frame
+const targetFPS = 7; // target FPS
+const interval = 1000 / targetFPS; // mileseconds per  Frame
 
 let lastFrameTime = 0; //This determines whether enough time has passed since the last frame to render the next frame.
 
@@ -205,9 +205,9 @@ function gameLoop(timestamp) {
         return; // Wait for the player to start the game
     }
 
-   /* if (isPaused) { //condition false without trigger
+    if (isPaused) { //condition false without trigger
         return; // Wait for the player to continue the game
-    }*/
+    }
 
       /*console.log(`Game continued: ${!isPaused}`);*/
 
@@ -246,15 +246,14 @@ function gameLoop(timestamp) {
         snake.move(); //  move snake first
         snake.drawSnake(isEatingAnimation); // then draw
         snake.isColliding();
-        
         if (food.isEaten(snake.segments[0])) {
             food.relocate();
+            food.eatFood();
+            snake.grow();
             isEatingAnimation = true;
             setTimeout(() => {
                 isEatingAnimation = false;
             }, 600);
-            food.eatFood();
-            snake.grow();
         }  
 
         // Collsion after movement
