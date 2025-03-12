@@ -22,8 +22,8 @@ Follow these steps to install and run the Snake Game on your Windows system:
   - type in node server.js
   - Ensure that you specify the correct path to the project folder before executing the command.
 
-    ---
-    ---
+---
+---
 
 ## OPTIONAL
  
