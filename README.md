@@ -26,10 +26,7 @@ Follow these steps to install and run the Snake Game on your Windows system:
     ---
 
 ## OPTIONAL
-    ---
-    ---
-
-
+ 
 ## 5. Install Electron Packager
 **In the same terminal, run:**
 - npm install electron-packager
