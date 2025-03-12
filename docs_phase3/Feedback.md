@@ -1,4 +1,4 @@
-c# Feedback Document for Project
+Feedback Document for Project
 
 ## Feedback from Phase 1
 
